@@ -374,12 +374,12 @@ def train(model, ema_model, optimizer, schedule, train_dataset, val_dataset, che
                       ('Time/Step (sec)', end_time),
                       ('Reconstruction Loss', round(train_feature_matching_loss.detach().cpu().item(), 3)),
                       ('KL loss', round(train_kl_div.detach().cpu().item(), 3)),
+                      ('nelbo', round(train_nelbo.detach().cpu().item(), 4)),
                       ('average KL loss', round(train_var_loss.item(), 3)),
                       ('Beta', round(kldiv_schedule(global_step).detach().cpu().item(), 4)),
                       ('N° active groups', np.sum([v.detach().cpu() >= hparams.metrics.latent_active_threshold
                                                    for v in train_global_varprior_losses])),
                       ('GradNorm', round(global_norm.detach().cpu().item(), 1)),
-                      ('nelbo', round(train_nelbo.detach().cpu().item(), 4)),
                       ('GradSkipCount', gradient_skip_counter),
                       # ('learning_rate', optimizer.param_groups[0]['lr']),
                       end="\r")
@@ -468,7 +468,7 @@ def train(model, ema_model, optimizer, schedule, train_dataset, val_dataset, che
                     torch.save({
                         'global_step': global_step,
                         'model_state_dict': model.module.state_dict(),
-                        'ema_model_state_dict': ema_model.state_dict() if hparams.train.use_ema else None,
+                        'ema_model_state_dict': ema_model.state_dict(),
                         'optimizer_state_dict': optimizer.state_dict(),
                         'scheduler_state_dict': schedule.state_dict()
                     }, checkpoint_path)

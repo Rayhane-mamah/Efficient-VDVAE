@@ -1,1 +1,1 @@
-rm -r logs-$1 checkpoints-$1 __pycache__
+rm -r logs-$1 checkpoints-$1
