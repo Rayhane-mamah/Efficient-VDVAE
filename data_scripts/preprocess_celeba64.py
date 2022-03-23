@@ -5,7 +5,7 @@ from functools import partial
 from concurrent.futures import ProcessPoolExecutor
 from tqdm import tqdm
 
-dump_folder = '../../tmp/'
+dump_folder = '../dataset_dumps/'
 
 
 def read_and_crop(image_filename):
@@ -17,7 +17,7 @@ def save(path, image_filename, image):
 
 
 def process_one_file(image_filename, split):
-    output_folder = os.path.join('../../celeba', split)
+    output_folder = os.path.join('../datasets/celebA', split)
     os.makedirs(output_folder, exist_ok=True)
 
     image = read_and_crop(image_filename)
@@ -33,11 +33,11 @@ def get_partitioned_filenames():
 
 
 def main():
-    splits = ['train', 'val', 'test']
+    splits = ['train_data', 'val_data', 'synthesis_data']
     all_filenames = get_partitioned_filenames()
 
     for split, split_filenames in zip(splits, all_filenames):
-        print(f'Processing {split} data..')
+        print(f'Processing {split}..')
         executor = ProcessPoolExecutor(max_workers=256)
         futures = [executor.submit(partial(process_one_file, filename, split)) for filename in split_filenames]
         _ = [future.result() for future in tqdm(futures)]

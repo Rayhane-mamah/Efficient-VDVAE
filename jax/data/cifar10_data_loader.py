@@ -34,7 +34,7 @@ def create_synthesis_cifar10_dataset():
         num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
 
         test_data = test_data.interleave(
-            lambda x: data_aug(x, False),
+            lambda x: data_prep(x, False),
             cycle_length=hparams.run.parallel_shards,
             block_length=1,
             num_parallel_calls=num_parallel_calls,
@@ -66,7 +66,7 @@ def create_synthesis_cifar10_dataset():
 
         # Preprocess subset and prefect to device
         train_data = train_data.interleave(
-            lambda x: data_aug(x, False),
+            lambda x: data_prep(x, False),
             cycle_length=hparams.run.parallel_shards,
             block_length=1,
             num_parallel_calls=num_parallel_calls,
@@ -92,7 +92,7 @@ def create_synthesis_cifar10_dataset():
         num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
 
         train_data = train_data.interleave(
-            named_data_aug,
+            named_data_prep,
             cycle_length=hparams.run.parallel_shards,
             block_length=1,
             num_parallel_calls=num_parallel_calls,
@@ -114,12 +114,12 @@ def create_synthesis_cifar10_dataset():
         return None
 
 
-def named_data_aug(img, filename):
-    inputs = data_aug(img, flip=False, return_targets=False)
+def named_data_prep(img, filename):
+    inputs = data_prep(img, flip=False, return_targets=False)
     return tf.data.Dataset.from_tensor_slices(tensors=(inputs, filename[tf.newaxis]))
 
 
-def data_aug(img, flip, return_targets=True):
+def data_prep(img, flip, return_targets=True):
     # Random flip
     if flip and hparams.data.random_horizontal_flip:
         img = tf.image.random_flip_left_right(img)
@@ -172,7 +172,7 @@ def create_cifar10_datasets():
     num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
 
     train_data = train_data.interleave(
-        lambda x: data_aug(x, True),
+        lambda x: data_prep(x, True),
         cycle_length=hparams.run.parallel_shards,
         block_length=1,
         num_parallel_calls=num_parallel_calls,
@@ -180,7 +180,7 @@ def create_cifar10_datasets():
     )
 
     val_data = val_data.interleave(
-        lambda x: data_aug(x, False),
+        lambda x: data_prep(x, False),
         cycle_length=hparams.run.parallel_shards,
         block_length=1,
         num_parallel_calls=num_parallel_calls,
