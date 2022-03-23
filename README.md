@@ -2,9 +2,9 @@
 # The Official Pytorch and JAX implementation of "Efficient-VDVAE: Less is more" [Arxiv preprint]()  
   
 <div align="center">  
-  <a>Ragavan&nbsp;Thurairatnam</a>   
+  <a>Louay Hazami</a>   
   &emsp; <b>&middot;</b> &emsp;  
-  <a>Ragavan&nbsp;Thurairatnam</a>   
+  <a>Rayhane Mama</a>   
   &emsp; <b>&middot;</b> &emsp;  
   <a>Ragavan&nbsp;Thurairatnam</a>  
 </div>  
