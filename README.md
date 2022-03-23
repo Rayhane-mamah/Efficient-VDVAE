@@ -1,5 +1,5 @@
 
-# The Official Pytorch and JAX implementation of "Efficient-VDVAE: Less is more"" [Arxiv preprint]()  
+# The Official Pytorch and JAX implementation of "Efficient-VDVAE: Less is more" [Arxiv preprint]()  
   
 <div align="center">  
   <a>Ragavan&nbsp;Thurairatnam</a>   
