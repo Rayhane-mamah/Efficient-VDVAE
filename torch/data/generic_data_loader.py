@@ -87,7 +87,7 @@ class generic_dataset(torch.utils.data.Dataset):
             self.filenames = filenames
 
     def __getitem__(self, idx):
-        if self.mode in 'train':
+        if self.mode == 'train':
             img = read_resize_image(self.files[idx])
             img = train_transform(img)
             return img

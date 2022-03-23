@@ -341,12 +341,12 @@ def train(model, ema_model, optimizer, schedule, train_dataset, val_dataset, che
 
     # let all processes sync up before starting with a new epoch of training
     total_train_epochs = int(np.ceil(hparams.train.total_train_steps / len(train_dataset)))
+    val_epoch = 0
     for epoch in range(0, total_train_epochs):
         train_dataset.sampler.set_epoch(epoch)
         if rank == 0:
             print(f'\nEpoch: {epoch + 1}')
         dist.barrier()
-
         for batch_n, train_inputs in enumerate(train_dataset):
             # update global step
             global_step += 1
@@ -385,7 +385,6 @@ def train(model, ema_model, optimizer, schedule, train_dataset, val_dataset, che
                       end="\r")
 
             if global_step % hparams.train.checkpoint_and_eval_interval_in_steps == 0 or global_step == 0:
-
                 model.eval()
                 # Compute SSIM at the end of the global_step
                 train_ssim = ssim_metric(train_inputs, train_outputs,
@@ -409,10 +408,10 @@ def train(model, ema_model, optimizer, schedule, train_dataset, val_dataset, che
                 val_global_varprior_losses = None
                 val_ssim = 0
                 val_kl_divs = 0
+                val_epoch += 1
 
-                val_dataset.sampler.set_epoch(epoch)
+                val_dataset.sampler.set_epoch(val_epoch)
                 for val_step, val_inputs in enumerate(val_dataset):
-
                     # Val inputs contains val_Data and filenames
                     val_inputs = val_inputs.to(device, non_blocking=True)
                     val_outputs, val_feature_matching_loss, \
@@ -488,5 +487,6 @@ def train(model, ema_model, optimizer, schedule, train_dataset, val_dataset, che
                 model.train()
             dist.barrier()
 
-            if global_step >= total_train_epochs:
-                break
+            if global_step >= hparams.train.total_train_steps:
+                print(f'Finished training after {global_step} steps!')
+                exit()
