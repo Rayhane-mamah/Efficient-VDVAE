@@ -138,7 +138,7 @@ class TopDown(torch.nn.Module):
         return torch.Tensor(logits.size()).bernoulli_(probs)  # B, C, H, W
 
     def _compute_scales(self, logits):
-        softplus = nn.Softplus(beta=np.log(2.))
+        softplus = nn.Softplus(beta=hparams.model.gradient_smoothing_beta)
         if hparams.model.distribution_base == 'std':
             scales = torch.maximum(softplus(logits), torch.as_tensor(np.exp(hparams.loss.min_mol_logscale)))
 
