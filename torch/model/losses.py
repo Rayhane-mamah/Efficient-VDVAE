@@ -53,7 +53,7 @@ def _compute_inv_stdv(logits):
 
     elif hparams.model.distribution_base == 'logstd':
         log_scales = torch.maximum(logits, torch.as_tensor(np.array(hparams.loss.min_mol_logscale)))
-        inv_stdv = torch.exp(-log_scales)
+        inv_stdv = torch.exp(-hparams.model.gradient_smoothing_beta * log_scales)
     else:
         raise ValueError(f'distribution base {hparams.model.distribution_base} not known!!')
 
