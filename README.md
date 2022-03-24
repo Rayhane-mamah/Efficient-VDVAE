@@ -24,9 +24,10 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
 <table align="center">
     <thead align="center">
         <tr>
-            <th rowspan=2 align="center">Dataset</th>
+            <th rowspan=2 align="center"> Dataset </th>
             <th colspan=2 align="center"> Pytorch </th>
             <th colspan=2 align="center"> JAX </th>
+            <th rowspan=2 align="center"> Negative ELBO </th>
         </tr>
         <tr>
 	        <th align="center"> Logs </th>
@@ -42,6 +43,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">79.09 nats</td>
         </tr>
         <tr>
             <td align="center">CIFAR-10</td>
@@ -49,6 +51,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">2.87 bits/dim</td>
         </tr>
         <tr>
             <td align="center">Imagenet 32x32</td>
@@ -56,6 +59,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">3.58 bits/dim</td>
         </tr>
         <tr>
             <td align="center">Imagenet 64x64</td>
@@ -63,6 +67,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">3.30 bits/dim</td>
         </tr>
         <tr>
             <td align="center">CelebA 64x64</td>
@@ -70,6 +75,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">1.83 bits/dim</td>
         </tr>
         <tr>
             <td align="center">CelebAHQ 256x256 (5-bits)</td>
@@ -77,6 +83,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">0.51 bits/dim</td>
         </tr>
         <tr>
             <td align="center">CelebAHQ 256x256 (8-bits)</td>
@@ -84,6 +91,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">1.35 bits/dim</td>
         </tr>
         <tr>
             <td align="center">FFHQ 256x256 (5-bits)</td>
@@ -91,6 +99,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">0.53 bits/dim</td>
         </tr>
         <tr>
             <td align="center">FFHQ 256x256 (8-bits)</td>
@@ -98,6 +107,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">2.17 bits/dim</td>
         </tr>
         <tr>
             <td align="center">CelebAHQ 1024x1024</td>
@@ -105,6 +115,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">1.01 bits/dim</td>
         </tr>
         <tr>
             <td align="center">FFHQ 1024x1024</td>
@@ -112,6 +123,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
+            <td align="center">2.30 bits/dim</td>
         </tr>
     </tbody>
 </table>
