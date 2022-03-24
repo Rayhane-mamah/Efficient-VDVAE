@@ -25,7 +25,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
     <thead align="center">
         <tr>
             <th rowspan=2 align="center">Dataset</th>
-            <th colspan=2 align="center"> Torch </th>
+            <th colspan=2 align="center"> Pytorch </th>
             <th colspan=2 align="center"> JAX </th>
         </tr>
         <tr>
@@ -120,6 +120,7 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
 
 - Downloading from the *"Checkpoints"* link will download the minimal required files to resume training/do inference. The minimal files are the model checkpoint file and the saved hyper-parameters of the run (explained further below).
 - Downloading from the *"Logs"* link will download additional pre-training logs such as tensorboard files or saved images from training. *"Logs"* also holds the saved hyper-parameters of the run.
+- Downloaded *"Logs"* and/or *"Checkpoints"* should be always unzipped in their implementation folder (`efficient_vdvae_torch` for Pytorch checkpoints and `efficient_vdvae_jax` for JAX checkpoints).
 - Some of the model checkpoints are missing in either Pytorch or JAX for the moment. We will update them soon.
   
 ## Pre-requisites   
@@ -181,7 +182,7 @@ We highly recommend having a deeper look into how this library works by reading 
 To run Efficient-VDVAE in Torch:  
   
 ```  
-cd torch  
+cd efficient_vdvae_torch  
 # Set the hyper-parameters in "hparams.cfg" file  
 # Set "NUM_GPUS_PER_NODE" in "train.sh" file  
 sh train.sh  
@@ -190,7 +191,7 @@ sh train.sh
 To run Efficient-VDVAE in JAX:  
   
 ```  
-cd jax  
+cd efficient_vdvae_jax  
 # Set the hyper-parameters in "hparams.cfg" file  
 python train.py  
 ```  
@@ -207,21 +208,20 @@ Models automatically create checkpoints during training. To resume a model from 
 Since training commands will save the hparams of the defined run in the `.cfg` file. If trying to restart a pre-existing run (by re-using its name in `hparams.cfg`), we provide a convenience script for resetting saved runs:  
   
 ```  
-cd torch  # or cd jax  
+cd efficient_vdvae_torch  # or cd efficient_vdvae_jax  
 sh reset.sh <run.name>  # <run.name> is the first field in hparams.cfg  
 ```  
 
-### Notes:  
+### Note:  
   
-- To make things easier for new users, we provide example `hparams.cfg` files that can be used under the [egs](https://github.com/Rayhane-mamah/Efficient-VDVAE/tree/main/egs) folder. Detailed description of the role of each parameter is also inside [hparams.cfg](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg).   
-- **Do not run any of the python scripts from the `Efficient-VDVAE` folder as python will confuse jax and torch libraries with the folder names!**
+- To make things easier for new users, we provide example `hparams.cfg` files that can be used under the [egs](https://github.com/Rayhane-mamah/Efficient-VDVAE/tree/main/egs) folder. Detailed description of the role of each parameter is also inside [hparams.cfg](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg).
   
 ## Monitoring the training process  
   
 While writing this codebase, we put extra emphasis on verbosity and logging. Aside from the printed logs on terminal (during training), you can monitor the training progress and keep track of useful metrics using [Tensorboard](https://www.tensorflow.org/tensorboard):  
   
 ```  
-# While outside torch or jax  
+# While outside efficient_vdvae_torch or efficient_vdvae_jax  
 tensorboard --logdir . --port <port_id> --reload_multifile=True  
 ```  
   
@@ -237,7 +237,7 @@ Efficient-VDVAE support multiple inference modes:
 To run the inference:  
   
 ```  
-cd torch  # or cd jax  
+cd efficient_vdvae_torch  # or cd efficient_vdvae_jax  
 # Set the inference mode in "logs-<run.name>/hparams-<run.name>.cfg"  
 # Set the same <run.name> in "hparams.cfg"  
 python synthesize.py  
