@@ -19,9 +19,108 @@ hierarchical VAE models. It also achieves SOTA likelihood-based performance on s
   
 ## Pre-trained model checkpoints  
   
-We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32, Imagenet 64x64, CelebA 64x64, CelebAHQ 256x256 (5-bits and 8-bits), FFHQ 256x256 (5-bits and 8bits), CelebAHQ 1024x1024 and FFHQ 1024x1024 in [this MEGA directory](https://mega.nz/folder/OThjRaKK#ZT1NYswUhFIjXUAb_xXyag). All provided models are the ones trained for table 4 of the [paper]().
-  
-Note: Some of these models are missing in either Pytorch or JAX for the time being. We will update them over time.
+We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32, Imagenet 64x64, CelebA 64x64, CelebAHQ 256x256 (5-bits and 8-bits), FFHQ 256x256 (5-bits and 8bits), CelebAHQ 1024x1024 and FFHQ 1024x1024 in the links in the table below. All provided models are the ones trained for table 4 of the [paper]().
+
+<table align="center">
+    <thead align="center">
+        <tr>
+            <th rowspan=2 align="center">Dataset</th>
+            <th colspan=2 align="center"> Torch </th>
+            <th colspan=2 align="center"> JAX </th>
+        </tr>
+        <tr>
+	        <th align="center"> Logs </th>
+	        <th align="center"> Checkpoints </th>
+	        <th align="center"> Logs </th>
+	        <th align="center"> Checkpoints </th>
+        </tr>
+    </thead>
+    <tbody align="center">
+        <tr>
+            <td align="center">MNIST</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+        <tr>
+            <td align="center">CIFAR-10</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+        <tr>
+            <td align="center">Imagenet 32x32</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+        <tr>
+            <td align="center">Imagenet 64x64</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+        <tr>
+            <td align="center">CelebA 64x64</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+        <tr>
+            <td align="center">CelebAHQ 256x256 (5-bits)</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+        <tr>
+            <td align="center">CelebAHQ 256x256 (8-bits)</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+        <tr>
+            <td align="center">FFHQ 256x256 (5-bits)</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+        <tr>
+            <td align="center">FFHQ 256x256 (8-bits)</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+        <tr>
+            <td align="center">CelebAHQ 1024x1024</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+        <tr>
+            <td align="center">FFHQ 1024x1024</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+    </tbody>
+</table>
+ 
+### Notes: 
+
+- Downloading from the *"Checkpoints"* link will download the minimal required files to resume training/do inference. The minimal files are the model checkpoint file and the saved hyper-parameters of the run (explained further below).
+- Downloading from the *"Logs"* link will download additional pre-training logs such as tensorboard files or saved images from training. *"Logs"* also holds the saved hyper-parameters of the run.
+- Some of the model checkpoints are missing in either Pytorch or JAX for the moment. We will update them soon.
   
 ## Pre-requisites   
 To run this codebase, you need:  
@@ -68,7 +167,8 @@ sh download_and_preprocess.sh <dataset_name>
   
 In this repository, we use [hparams](https://github.com/Rayhane-mamah/hparams) library (already included in the Dockerfile) for hyper-parameter management:  
   
-- Specify all run parameters (number of GPUs, model parameters, etc) in one `.cfg` file  
+- Specify all run parameters (number of GPUs, model parameters, etc) in one `.cfg` file
+- Hparams evaluates any expression used as "value" in the `.cfg` file. "value" can be any basic python object `(floats, strings, lists, etc)` or any python basic expression `(1/2, max(3, 7), etc.)` as long as the evaluation does not require any library importations or does not rely on other values from the `.cfg`.
 - Hparams saves the configuration of previous runs for reproducibility, resuming training, etc.  
 - All hparams are saved by name, and re-using the same name will recall the old run instead of making a new one.  
 - The `.cfg` file is split into sections for readability, and all parameters in the file are accessible as class attributes in the codebase for convenience.  
