@@ -74,7 +74,7 @@ In this repository, we use [hparams](https://github.com/Rayhane-mamah/hparams) l
 - The `.cfg` file is split into sections for readability, and all parameters in the file are accessible as class attributes in the codebase for convenience.  
 - The HParams object keeps a global state throughout all the scripts in the code.  
   
-We highly recommend having a deeper look into how this library works by reading the [hparams library documentation](https://github.com/Rayhane-mamah/hparams)  and the [parameters description](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg) before trying to run Efficient-VDVAE.  
+We highly recommend having a deeper look into how this library works by reading the [hparams library documentation](https://github.com/Rayhane-mamah/hparams), the [parameters description](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg) and figures 4 and 5 in the [paper]() before trying to run Efficient-VDVAE.  
   
 ## Training the Efficient-VDVAE  
   

@@ -149,12 +149,6 @@ class ReconstructionLayer:
             log_scales = jnp.maximum(logits, hparams.loss.min_mol_logscale)
             scales = jnp.exp(hparams.model.gradient_smoothing_beta * log_scales)
 
-        elif hparams.model.distribution_base == 'invstd':
-            # S_plus(-logits): The direction of the pre-activation is arbitrary
-            # We choose -logits to keep the "log_std" intuition that bigger logits translate to bigger std (smaller inv_stdv)
-            inv_stdv = beta_softplus(-logits, beta=hparams.model.gradient_smoothing_beta)
-            scales = 1. / inv_stdv
-
         else:
             raise ValueError(f'distribution base {hparams.model.distribution_base} not known!!')
 
@@ -228,12 +222,6 @@ class ReconstructionLayer:
         elif hparams.model.distribution_base == 'logstd':
             log_scales = jnp.maximum(logits, hparams.loss.min_mol_logscale)
             inv_stdv = jnp.exp(-hparams.model.gradient_smoothing_beta * log_scales)
-
-        elif hparams.model.distribution_base == 'invstd':
-            # S_plus(-logits): The direction of the pre-activation is arbitrary
-            # We choose -logits to keep the "log_std" intuition that bigger logits translate to bigger std (smaller inv_stdv)
-            inv_stdv = beta_softplus(-logits, beta=hparams.model.gradient_smoothing_beta)
-            log_scales = jnp.log(1. / inv_stdv)
 
         else:
             raise ValueError(f'distribution base {hparams.model.distribution_base} not known!!')
@@ -361,26 +349,11 @@ class KLDivergence:
         loss = 0.5 * (term1 + term2) - 0.5 - jnp.log(p_std_on_q_std)  # batch, h, w, n_gauss
         return loss
 
-    def _gauss_invstd_based_kl(self, p, q):
-        p_mean, inv_p_std = p
-        q_mean, inv_q_std = q
-
-        p_std_on_q_std = inv_q_std / inv_p_std
-
-        term1 = jnp.square((p_mean - q_mean) * inv_q_std)
-        term2 = jnp.square(p_std_on_q_std)
-
-        # KL = 0.5 [(p_mu - q_mu) ** 2 / q_sigma ** 2 + p_sigma ** 2 / q_sigma ** 2 - 1 - 2 log(p_sigma / q_sigma)]
-        loss = 0.5 * (term1 + term2) - 0.5 - jnp.log(p_std_on_q_std)  # batch, h, w, n_gauss
-        return loss
-
     def _get_kl_loss(self, p, q):
         if hparams.model.distribution_base == 'std':
             loss = self._gauss_std_based_kl(p, q)
         elif hparams.model.distribution_base == 'logstd':
             loss = self._gauss_logstd_based_kl(p, q)
-        elif hparams.model.distribution_base == 'invstd':
-            loss = self._gauss_invstd_based_kl(p, q)
         else:
             raise ValueError(f'distribution base {hparams.model.distribution_base} not known!!')
 

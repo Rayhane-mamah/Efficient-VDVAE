@@ -19,8 +19,6 @@ class KLDivergenceStats(KLDivergence):
             loss = self._gauss_std_based_kl(p, q)
         elif hparams.model.distribution_base == 'logstd':
             loss = self._gauss_logstd_based_kl(p, q)
-        elif hparams.model.distribution_base == 'invstd':
-            loss = self._gauss_invstd_based_kl(p, q)
         else:
             raise ValueError(f'distribution base {hparams.model.distribution_base} not known!!')
 

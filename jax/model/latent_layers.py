@@ -27,8 +27,6 @@ class GaussianLatentLayer(nn.Module):
             mean, std, stats = _std_mode(x, prior_stats)
         elif hparams.model.distribution_base == 'logstd':
             mean, std, stats = _logstd_mode(x, prior_stats)
-        elif hparams.model.distribution_base == 'invstd':
-            mean, std, stats = _invstd_mode(x, prior_stats)
         else:
             raise ValueError(f'distribution base {hparams.model.distribution_base} not known!!')
 
@@ -38,16 +36,9 @@ class GaussianLatentLayer(nn.Module):
         if return_sample:
             eps = random.normal(key=key, shape=mean.shape, dtype=mean.dtype)
             z = eps * std + mean
-            return z, stats  # Return the clamped mean (optional clamp) and logstd for loss computation
+            return z, stats
 
         return stats
-
-
-def soft_clamp(x, clip_value):
-    """Soft clamp based on tanh activation. Used for logstd"""
-    clip_value = jnp.abs(clip_value)
-    x = clip_value * nn.tanh(x / clip_value)
-    return x
 
 
 def beta_softplus(x, beta):
@@ -79,7 +70,7 @@ def _std_mode(x, prior_stats):
 
 
 def _logstd_mode(x, prior_stats):
-    """The model predicts logstd, which we clamp and turn into std"""
+    """The model predicts logstd, which we smooth turn into std"""
     mean, logstd = jnp.split(x, indices_or_sections=2, axis=-1)
 
     if prior_stats is not None:
@@ -88,18 +79,4 @@ def _logstd_mode(x, prior_stats):
 
     std = jnp.exp(hparams.model.gradient_smoothing_beta * logstd)
     stats = [mean, logstd]
-    return mean, std, stats
-
-
-def _invstd_mode(x, prior_stats):
-    """The model predicts invstd, softplus is used to ensure invstd i positive and avoid overflow by std denominator in KL div"""
-    mean, invstd = jnp.split(x, indices_or_sections=2, axis=-1)
-    invstd = beta_softplus(-invstd, beta=hparams.model.gradient_smoothing_beta)  # beta=ln(2.) yields std of 1 at x=0 and is less sharp than beta=1
-
-    if prior_stats is not None:
-        mean = mean + prior_stats[0]
-        invstd = invstd * prior_stats[1]
-
-    std = 1. / invstd
-    stats = [mean, invstd]
     return mean, std, stats
