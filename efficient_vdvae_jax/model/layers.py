@@ -166,7 +166,6 @@ class LevelBlockDown(nn.Module):
 
         self.residual_block = residual_block
 
-        # TODO generalize the input_size of posterior net
         self.posterior_net = ResidualConvCell(
             n_layers=self.n_layers,
             bottleneck_ratio=self.bottleneck_ratio * 0.5,  # the input is 2* filters (concat of skip_x and y)

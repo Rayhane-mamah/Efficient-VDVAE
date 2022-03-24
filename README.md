@@ -176,6 +176,8 @@ In this repository, we use [hparams](https://github.com/Rayhane-mamah/hparams) l
 - The HParams object keeps a global state throughout all the scripts in the code.  
   
 We highly recommend having a deeper look into how this library works by reading the [hparams library documentation](https://github.com/Rayhane-mamah/hparams), the [parameters description](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg) and figures 4 and 5 in the [paper]() before trying to run Efficient-VDVAE.  
+
+We have heavily tested the robustness and stability of our approach, so changing the model/optimization hyper-parameters for memory load reduction should not introduce any drastic instabilities as to make the model untrainable. That is of course as long as the changes don't negate the important stability points we describe in the paper.
   
 ## Training the Efficient-VDVAE  
   
@@ -253,6 +255,7 @@ python synthesize.py
 - [ ] Make data loaders Out-Of-Core (OOC) in JAX
 - [ ] Update pre-trained model checkpoints
 - [ ] Improve the format of the encoded dataset used in downstream tasks (output of `encoding` mode, if there is a need)
+- [ ] Write a `decoding` mode API (if needed).
 
 ## Bibtex  
   
