@@ -301,6 +301,8 @@ def stats_data():
 
 
 def main():
+    if hparams.run.num_gpus > 1 :
+        raise ValueError("Inference mode in Pytorch only supports single GPU")
     model = UniversalAutoEncoder()
     model = model.to(device)
     _ = model(torch.ones((1, hparams.data.channels, hparams.data.target_res, hparams.data.target_res)).cuda())
