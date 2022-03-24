@@ -3,7 +3,7 @@ import jax.numpy as jnp
 import jax.lax as lax
 from hparams import HParams
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 def get_lr_schedule(decay_scheme, init_lr, warmup_steps, decay_steps, decay_rate, decay_start, min_lr):

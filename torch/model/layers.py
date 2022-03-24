@@ -13,7 +13,7 @@ except (ImportError, ValueError):
     from utils.utils import get_same_padding
     from model.conv2d import Conv2d
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 class SqueezeExcite(nn.Module):

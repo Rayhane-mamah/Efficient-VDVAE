@@ -2,7 +2,7 @@ import pickle
 
 from hparams import HParams
 
-hparams = HParams('.', name="global_local_memcodes")
+hparams = HParams('.', name="efficient_vdvae")
 import torch
 from numpy.random import seed
 import random

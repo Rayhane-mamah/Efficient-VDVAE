@@ -22,7 +22,7 @@ except (ImportError, ValueError):
     from utils.utils import get_effective_n_pixels
     from model.latent_layers import beta_softplus
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 class Loss:

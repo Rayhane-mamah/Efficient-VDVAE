@@ -14,7 +14,7 @@ except (ImportError, ValueError):
     from model.adamax import scale_by_adamax
     from model.schedules import NarrowCosineDecay
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 def get_optimizer(type, learning_rate, beta_1, beta_2, epsilon, use_weight_decay, l2_weight, l2_mask):

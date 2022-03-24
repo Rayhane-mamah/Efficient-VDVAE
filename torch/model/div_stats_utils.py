@@ -16,7 +16,7 @@ try:
 except (ImportError, ValueError):
     from model.losses import KLDivergence
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 @torch.jit.script
 def calculate_loss(p: List[torch.Tensor], q: List[torch.Tensor]):

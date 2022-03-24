@@ -4,7 +4,7 @@ import jax.numpy as jnp
 from flax import linen as nn
 from hparams import HParams
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 class StructureSimilarityIndexMap:

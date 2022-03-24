@@ -6,7 +6,7 @@ from collections import defaultdict
 from torch.utils.tensorboard import SummaryWriter
 from prettytable import PrettyTable
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 def get_logdir():

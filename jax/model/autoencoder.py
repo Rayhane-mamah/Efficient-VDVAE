@@ -14,7 +14,7 @@ except (ImportError, ValueError):
     from model.conv2d import Conv2D
     from utils.utils import compute_latent_dimension
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 class BottomUp(nn.Module):

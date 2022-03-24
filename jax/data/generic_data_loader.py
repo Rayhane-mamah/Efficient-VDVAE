@@ -17,7 +17,7 @@ except (ImportError, ValueError):
     from utils.normalizer import Normalizer
     from utils.utils import compute_latent_dimension
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 def load_and_shard_tf_batch(xs, global_batch_size):

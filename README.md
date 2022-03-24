@@ -1,6 +1,4 @@
-
-  
-<center> <h1>The Official Pytorch and JAX implementation of "Efficient-VDVAE: Less is more" <a href="">Arxiv preprint</a></h1> </center>  
+<div align="center"> <h1>The Official Pytorch and JAX implementation of "Efficient-VDVAE: Less is more" <a href="">Arxiv preprint</a></h1> </div>  
   
 <div align="center">    
   <a>Louay&nbsp;Hazami</a>     
@@ -11,7 +9,7 @@
 </div>    
 <br>    
 <br>   
-    
+ 
 [Efficient-VDVAE]() is a memory and compute efficient very deep hierarchical VAE. It converges faster and is more stable than current     
 hierarchical VAE models. It also achieves SOTA likelihood-based performance on several image datasets.    
     
@@ -21,7 +19,7 @@ hierarchical VAE models. It also achieves SOTA likelihood-based performance on s
   
 ## Pre-trained model checkpoints  
   
-We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32, Imagenet 64x64, CelebA 64x64, CelebAHQ 256x256 (5-bits and 8-bits), FFHQ 256x256 (5-bits and 8bits), CelebAHQ 1024x1024 and FFHQ 1024x1024 in [this MEGA directory](https://mega.nz/folder/OThjRaKK#ZT1NYswUhFIjXUAb_xXyag).
+We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32, Imagenet 64x64, CelebA 64x64, CelebAHQ 256x256 (5-bits and 8-bits), FFHQ 256x256 (5-bits and 8bits), CelebAHQ 1024x1024 and FFHQ 1024x1024 in [this MEGA directory](https://mega.nz/folder/OThjRaKK#ZT1NYswUhFIjXUAb_xXyag). All provided models are the ones trained for table 4 of the [paper]().
   
 Note: Some of these models are missing in either Pytorch or JAX for the time being. We will update them over time.
   
@@ -50,7 +48,7 @@ All code executions should be done within a docker container. To start the docke
 ```  
 sh docker_run.sh  # Starts the container and attaches terminal
 cd /workspace/Efficient-VDVAE  # Inside docker container
-```
+```  
 ## Setup datasets  
   
 All datasets can be automatically downloaded and pre-processed from the convenience script we provide:
@@ -76,7 +74,7 @@ In this repository, we use [hparams](https://github.com/Rayhane-mamah/hparams) l
 - The `.cfg` file is split into sections for readability, and all parameters in the file are accessible as class attributes in the codebase for convenience.  
 - The HParams object keeps a global state throughout all the scripts in the code.  
   
-We highly recommend having a deeper look into how this library works by reading the [README file](https://github.com/Rayhane-mamah/hparams)  before trying to run Efficient-VDVAE.  
+We highly recommend having a deeper look into how this library works by reading the [hparams library documentation](https://github.com/Rayhane-mamah/hparams)  and the [parameters description](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg) before trying to run Efficient-VDVAE.  
   
 ## Training the Efficient-VDVAE  
   
@@ -112,8 +110,11 @@ Since training commands will save the hparams of the defined run in the `.cfg` f
 cd torch  # or cd jax  
 sh reset.sh <run.name>  # <run.name> is the first field in hparams.cfg  
 ```  
+
+### Notes:  
   
-To make things easier for new users, we provide example `hparams.cfg` files that can be used under the [egs](https://github.com/Rayhane-mamah/Efficient-VDVAE/tree/main/egs) folder. Detailed description of the role of each parameter is also inside [hparams.cfg](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg).  
+- To make things easier for new users, we provide example `hparams.cfg` files that can be used under the [egs](https://github.com/Rayhane-mamah/Efficient-VDVAE/tree/main/egs) folder. Detailed description of the role of each parameter is also inside [hparams.cfg](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg).   
+- **Do not run any of the python scripts from the `Efficient-VDVAE` folder as python will confuse jax and torch libraries with the folder names!**
   
 ## Monitoring the training process  
   

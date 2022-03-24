@@ -14,7 +14,7 @@ from hparams import HParams
 from typing import List
 from torch.distributions.bernoulli import Bernoulli
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 class BernoulliLoss(nn.Module):

@@ -8,7 +8,7 @@ from hparams import HParams
 from PIL import Image
 from torch.utils.data.distributed import DistributedSampler
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 def download_cifar10_datasets():

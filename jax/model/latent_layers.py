@@ -9,7 +9,7 @@ try:
 except (ImportError, ValueError):
     from model.conv2d import Conv2D, uniform_init
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 class GaussianLatentLayer(nn.Module):

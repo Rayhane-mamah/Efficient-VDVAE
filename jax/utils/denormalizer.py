@@ -1,7 +1,7 @@
 import numpy as np
 from hparams import HParams
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 def min_max(x):

@@ -3,7 +3,7 @@ import numpy as np
 
 from hparams import HParams
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 def reduce_bits_fn(x, use_tf):

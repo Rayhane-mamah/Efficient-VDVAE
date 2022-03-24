@@ -11,7 +11,7 @@ tf.config.set_visible_devices([], device_type='GPU')
 from hparams import HParams
 
 # Initialize hparams before any other imports
-hparams = HParams('.', name="global_local_memcodes")
+hparams = HParams('.', name="efficient_vdvae")
 
 from jax.config import config
 

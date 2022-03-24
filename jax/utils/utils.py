@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from hparams import HParams
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 def assert_CUDA_and_hparams_gpus_are_equal():

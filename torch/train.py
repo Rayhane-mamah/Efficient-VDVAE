@@ -4,7 +4,7 @@ from hparams import HParams
 import os
 import numpy as np
 
-hparams = HParams('.', name="global_local_memcodes")
+hparams = HParams('.', name="efficient_vdvae")
 
 import torch
 import torch.distributed as dist

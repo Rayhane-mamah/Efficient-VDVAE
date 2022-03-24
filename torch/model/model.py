@@ -23,7 +23,7 @@ except (ImportError, ValueError):
     from utils.utils import create_checkpoint_manager_and_load_if_exists, effective_pixels
     from model.adamax import Adamax
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 if hparams.loss.variation_schedule == 'None':
     kldiv_schedule = lambda x: torch.as_tensor(1.)

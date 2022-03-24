@@ -21,7 +21,7 @@ except (ImportError, ValueError):
     from model.losses import Loss, ReconstructionLayer
     from model.ssim import StructureSimilarityIndexMap
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 def compute_global_norm(grads):
@@ -188,7 +188,7 @@ def train(rng, state, train_data, val_data, tb_writer_train, tb_writer_val, chec
             train_nelbo = train_metrics['kl_div'] + train_metrics['avg_recon_loss']
             # n_active_groups IS MERELY A HEURISTIC FOR DEBUGGING, IT DOES NOT LITERALLY MEAN A HIERARCHY GROUP IS USEFUL
             n_active_groups = jnp.sum(jnp.asarray([v >= hparams.metrics.latent_active_threshold for v in train_metrics['avg_kl_divs']], dtype=jnp.float32))
-            print(f'global global_step: {global_step:08d} | Time/global_step (sec): {step_time:.4f} | '
+            print(f'global_step: {global_step:08d} | Time/global_step (sec): {step_time:.4f} | '
                   f'Reconstruction Loss: {train_metrics["avg_recon_loss"]:.4f} | '
                   f'KL loss: {train_metrics["kl_div"]:.4f} | NELBO: {train_nelbo:.4f} | '
                   f'average KL loss: {train_avg_kl:.4f} | Beta: {loss.kldiv_schedule(global_step):.4f} | '

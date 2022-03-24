@@ -14,7 +14,7 @@ except (ImportError, ValueError):
     from model.conv2d import Conv2d
     from utils.utils import scale_pixels
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 class BottomUp(torch.nn.Module):

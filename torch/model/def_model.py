@@ -6,7 +6,7 @@ try:
 except (ImportError, ValueError):
     from model.autoencoder import TopDown, BottomUp
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 class UniversalAutoEncoder(nn.Module):

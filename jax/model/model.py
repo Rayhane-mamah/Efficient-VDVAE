@@ -14,7 +14,7 @@ except (ImportError, ValueError):
     from model.autoencoder import TopDown, BottomUp
     from model.losses import ReconstructionLayer
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 class UniversalAutoEncoder(nn.Module):

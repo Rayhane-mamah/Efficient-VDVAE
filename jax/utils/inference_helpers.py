@@ -29,7 +29,7 @@ except (ImportError, ValueError):
     from utils.train_helpers import sample_outputs_from_logits, reshape_to_single_device, change_unit_of_metrics
     from utils.denormalizer import Denormalizer
 
-hparams = HParams.get_hparams_by_name("global_local_memcodes")
+hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
 def forward_fn(params, rng, model, inputs, targets, global_batch_size, training, variate_masks):
