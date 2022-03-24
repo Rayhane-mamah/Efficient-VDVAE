@@ -120,7 +120,7 @@ def train_val_data_generic(train_images, train_filenames, val_images, val_filena
     train_sampler = DistributedSampler(train_data, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
     train_loader = torch.utils.data.DataLoader(sampler=train_sampler,
                                                dataset=train_data,
-                                               batch_size=hparams.train.batch_size,
+                                               batch_size=hparams.train.batch_size // hparams.run.num_gpus,
                                                shuffle=False,
                                                pin_memory=True,
                                                num_workers=2,
@@ -130,7 +130,7 @@ def train_val_data_generic(train_images, train_filenames, val_images, val_filena
     val_sampler = DistributedSampler(val_data, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
     val_loader = torch.utils.data.DataLoader(sampler=val_sampler,
                                              dataset=val_data,
-                                             batch_size=hparams.val.batch_size,
+                                             batch_size=hparams.val.batch_size // hparams.run.num_gpus,
                                              shuffle=False,
                                              pin_memory=True,
                                              num_workers=2,

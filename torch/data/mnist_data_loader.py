@@ -92,7 +92,7 @@ def train_val_data_mnist(world_size, rank):
     train_sampler = DistributedSampler(train_mnist, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
     train_loader = torch.utils.data.DataLoader(sampler=train_sampler,
                                                dataset=train_mnist,
-                                               batch_size=hparams.train.batch_size,
+                                               batch_size=hparams.train.batch_size // hparams.run.num_gpus,
                                                shuffle=False,
                                                pin_memory=True,
                                                num_workers=2,
@@ -102,7 +102,7 @@ def train_val_data_mnist(world_size, rank):
     val_sampler = DistributedSampler(val_mnist, num_replicas=world_size, rank=rank, shuffle=True, drop_last=True)
     val_loader = torch.utils.data.DataLoader(sampler=val_sampler,
                                              dataset=val_mnist,
-                                             batch_size=hparams.val.batch_size,
+                                             batch_size=hparams.val.batch_size // hparams.run.num_gpus,
                                              shuffle=False,
                                              pin_memory=True,
                                              num_workers=2,

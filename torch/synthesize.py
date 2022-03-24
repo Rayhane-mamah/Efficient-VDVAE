@@ -262,42 +262,42 @@ def synthesize(model, data, logdir, mode):
 
 
 def synth_data():
-    if hparams.data.dataset_source in ['ffhq', 'celebaHQ', 'celeba']:
+    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA']:
         return synth_generic_data()
-    elif hparams.data.dataset_source == 'cifar10':
+    elif hparams.data.dataset_source == 'cifar-10':
         return synth_cifar_data()
     elif hparams.data.dataset_source == 'binarized_mnist':
         return synth_mnist_data()
     elif hparams.data.dataset_source == 'imagenet':
         return synth_imagenet_data()
     else:
-        raise ValueError(f'Dataset{hparams.data.dataset_source} is not included.')
+        raise ValueError(f'Dataset {hparams.data.dataset_source} is not included.')
 
 
 def encode_data():
-    if hparams.data.dataset_source in ['ffhq', 'celebaHQ', 'celeba']:
+    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA']:
         return encode_generic_data()
-    elif hparams.data.dataset_source == 'cifar10':
+    elif hparams.data.dataset_source == 'cifar-10':
         return encode_cifar_data()
     elif hparams.data.dataset_source == 'binarized_mnist':
         return encode_mnist_data()
     elif hparams.data.dataset_source == 'imagenet':
         return encode_imagenet_data()
     else:
-        raise ValueError(f'Dataset{hparams.data.dataset_source} is not included.')
+        raise ValueError(f'Dataset {hparams.data.dataset_source} is not included.')
 
 
 def stats_data():
-    if hparams.data.dataset_source in ['ffhq', 'celebaHQ', 'celeba']:
+    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA']:
         return stats_generic_data()
-    elif hparams.data.dataset_source == 'cifar10':
+    elif hparams.data.dataset_source == 'cifar-10':
         return stats_cifar_data()
     elif hparams.data.dataset_source == 'binarized_mnist':
         return stats_mnist_data()
     elif hparams.data.dataset_source == 'imagenet':
         return stats_imagenet_data()
     else:
-        raise ValueError(f'Dataset{hparams.data.dataset_source} is not included.')
+        raise ValueError(f'Dataset {hparams.data.dataset_source} is not included.')
 
 
 def main():

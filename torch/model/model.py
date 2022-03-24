@@ -63,13 +63,15 @@ def get_optimizer(model, type, learning_rate, beta_1, beta_2, epsilon,
         opt_kwargs = dict(
             lr=learning_rate,
             betas=(beta_1, beta_2),
-            eps=epsilon)
+            eps=epsilon,
+            weight_decay=weight_decay_rate)
     elif type == 'Adam':
         opt = torch.optim.Adam
         opt_kwargs = dict(
             lr=learning_rate,
             betas=(beta_1, beta_2),
-            eps=epsilon)
+            eps=epsilon,
+            weight_decay=weight_decay_rate)
 
     else:
         raise ValueError(f'Optimizer {type} not known!!')
@@ -246,7 +248,7 @@ def _compiled_train_step(model, inputs, step_n):
                                       posterior_dist_list=posterior_dist_list,
                                       prior_kl_dist_list=prior_kl_dist_list,
                                       step_n=step_n,
-                                      global_batch_size=hparams.train.batch_size)
+                                      global_batch_size=hparams.train.batch_size // hparams.run.num_gpus)
 
     total_generator_loss.backward()
 
@@ -282,7 +284,7 @@ def eval_step(model, inputs, step_n):
                                           posterior_dist_list=posterior_dist_list,
                                           prior_kl_dist_list=prior_kl_dist_list,
                                           step_n=step_n,
-                                          global_batch_size=hparams.val.batch_size)
+                                          global_batch_size=hparams.val.batch_size // hparams.run.num_gpus)
 
         outputs = model.module.top_down.sample(predictions)
 
@@ -388,7 +390,7 @@ def train(model, ema_model, optimizer, schedule, train_dataset, val_dataset, che
                 model.eval()
                 # Compute SSIM at the end of the global_step
                 train_ssim = ssim_metric(train_inputs, train_outputs,
-                                         global_batch_size=hparams.train.batch_size)
+                                         global_batch_size=hparams.train.batch_size // hparams.run.num_gpus)
                 if rank == 0:
                     train_losses = {'reconstruction_loss': train_feature_matching_loss,
                                     'kl_div': train_kl_div,
@@ -420,7 +422,7 @@ def train(model, ema_model, optimizer, schedule, train_dataset, val_dataset, che
                                                                                                 step_n=global_step)
 
                     val_ssim_per_batch = ssim_metric(val_inputs, val_outputs,
-                                                     global_batch_size=hparams.val.batch_size)
+                                                     global_batch_size=hparams.val.batch_size // hparams.run.num_gpus)
 
                     val_feature_matching_losses += val_feature_matching_loss
                     val_ssim += val_ssim_per_batch

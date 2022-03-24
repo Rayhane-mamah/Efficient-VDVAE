@@ -58,9 +58,9 @@ class GaussianLatentLayer(nn.Module):
     def forward(self, x, temperature=None, prior_stats=None, return_sample=True):
         x = self.projection(x)
 
-        if hparams.mode.distribution_base == 'std':
+        if hparams.model.distribution_base == 'std':
             mean, std, stats = _std_mode(x, prior_stats, self.softplus)
-        elif hparams.mode.distribution_base == 'logstd':
+        elif hparams.model.distribution_base == 'logstd':
             mean, std, stats = _logstd_mode(x, prior_stats)
         else:
             raise ValueError(f'distribution base {hparams.model.distribution_base} not known!!')

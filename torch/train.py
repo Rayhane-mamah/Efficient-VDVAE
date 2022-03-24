@@ -118,19 +118,19 @@ def main():
 
     model = DistributedDataParallel(model)
 
-    if hparams.data.dataset_source in ['ffhq', 'celebaHQ', 'celeba', 'ffhq1024']:
+    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA']:
         train_files, train_filenames = create_filenames_list(hparams.data.train_data_path)
         val_files, val_filenames = create_filenames_list(hparams.data.val_data_path)
         train_loader, val_loader = train_val_data_generic(train_files, train_filenames, val_files, val_filenames,
                                                           hparams.run.num_gpus, local_rank)
-    elif hparams.data.dataset_source == 'cifar10':
+    elif hparams.data.dataset_source == 'cifar-10':
         train_loader, val_loader = train_val_data_cifar10(hparams.run.num_gpus, local_rank)
     elif hparams.data.dataset_source == 'binarized_mnist':
         train_loader, val_loader = train_val_data_mnist(hparams.run.num_gpus, local_rank)
     elif hparams.data.dataset_source == 'imagenet':
         train_loader, val_loader = train_val_data_imagenet(hparams.run.num_gpus, local_rank)
     else:
-        raise ValueError(f'Dataset{hparams.data.dataset_source} is not included.')
+        raise ValueError(f'Dataset {hparams.data.dataset_source} is not included.')
 
     # Book Keeping
     writer_train, logdir = create_tb_writer(mode='train')
