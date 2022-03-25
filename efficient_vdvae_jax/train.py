@@ -126,7 +126,7 @@ def main():
     # Load checkpoint if exists
     state = load_checkpoint_if_exists(checkpoint_dir, state, replace_params_with_emaparams=hparams.train.resume_from_ema)
 
-    print("Beginning training...")
+    print("Beginning training (first step does XLA compilation and can take several minutes)...")
     # Training loop
     train(rng=rng,
           state=state,

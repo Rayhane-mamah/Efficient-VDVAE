@@ -10,7 +10,8 @@
 <br>    
 <br>   
  
-[Efficient-VDVAE]() is a memory and compute efficient very deep hierarchical VAE. It converges faster and is more stable than current hierarchical VAE models. It also achieves SOTA likelihood-based performance on several image datasets.    
+[Efficient-VDVAE]() is a memory and compute efficient very deep hierarchical VAE. It converges faster and is more stable than current     
+hierarchical VAE models. It also achieves SOTA likelihood-based performance on several image datasets.    
     
 <p align="center">  
     <img src="images/unconditional_samples.png" width="1200">  
@@ -235,8 +236,16 @@ While writing this codebase, we put extra emphasis on verbosity and logging. Asi
   
 ```  
 # While outside efficient_vdvae_torch or efficient_vdvae_jax  
-tensorboard --logdir . --port <port_id> --reload_multifile=True  
+# Run outside the docker container
+tensorboard --logdir . --port <port_id> --reload_multifile True  
 ```  
+
+In the browser, navigate to `localhost:<port_id>` to visualize all saved metrics.
+
+If Tensorboard is not installed (outside the docker container):
+```
+pip install --upgrade tensorboard
+```
   
 ## Inference with the Efficient-VDVAE  
   
@@ -263,7 +272,7 @@ python synthesize.py
 ## Potential TODOs
 
 - [x] Make data loaders Out-Of-Core (OOC) in Pytorch
-- [ ] Make data loaders Out-Of-Core (OOC) in JAX
+- [x] Make data loaders Out-Of-Core (OOC) in JAX
 - [ ] Update pre-trained model checkpoints
 - [ ] Improve the format of the encoded dataset used in downstream tasks (output of `encoding` mode, if there is a need)
 - [ ] Write a `decoding` mode API (if needed).

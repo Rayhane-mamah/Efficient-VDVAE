@@ -126,7 +126,7 @@ def main():
     # Load checkpoint if exists
     state = load_checkpoint_if_exists(checkpoint_dir, state, replace_params_with_emaparams=False)
 
-    print("Beginning inference...")
+    print("Beginning inference (first step does XLA compilation and can take several minutes)...")
     # Training loop
     synthesize(rng=rng,
                params=state.ema_params if hparams.synthesis.load_ema_weights else state.params,

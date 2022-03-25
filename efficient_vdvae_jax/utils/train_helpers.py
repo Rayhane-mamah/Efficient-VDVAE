@@ -138,7 +138,7 @@ def eval_step(rng, state, val_inputs, val_targets, batch_size):
 def train(rng, state, train_data, val_data, tb_writer_train, tb_writer_val, checkpoint_dir, lr_schedule):
     initial_step = int(state.step)  # get the init step number before replicating the state
     print(f'\tStarting from step {initial_step}...\n')
-    devices = jax.devices('gpu')
+    devices = jax.devices('gpu') if hparams.run.num_gpus >= 1 else jax.devices()
     state = jax_utils.replicate(state, devices=devices)
 
     denormalizer = Denormalizer()

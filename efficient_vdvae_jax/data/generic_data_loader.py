@@ -5,8 +5,6 @@ import numpy as np
 from sklearn.utils import shuffle
 from hparams import HParams
 from PIL import Image
-from tqdm import tqdm
-import multiprocessing
 import jax
 from flax import jax_utils
 
@@ -29,48 +27,45 @@ def load_and_shard_tf_batch(xs, global_batch_size):
     return jax.tree_map(_prepare, xs)
 
 
+def read_image_and_resize(image_file):
+    return np.asarray(
+        Image.open(image_file).convert("RGB").resize((hparams.data.target_res, hparams.data.target_res),
+                                                     resample=Image.BILINEAR)).astype(np.uint8)
+
+
 def create_synthesis_generic_dataset():
     if hparams.synthesis.synthesis_mode == 'reconstruction':
-        test_data = SynthFileReader(path=hparams.data.synthesis_data_path)
+        test_data = FileReader(path=hparams.data.synthesis_data_path, shuffle_=False)
 
         test_data = tf.data.Dataset.from_generator(test_data.generator,
-                                                   output_types=tf.uint8,
-                                                   output_shapes=tf.TensorShape(
-                                                       [hparams.data.target_res, hparams.data.target_res,
-                                                        hparams.data.channels]))
-
-        num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
+                                                   output_types=tf.string,
+                                                   output_shapes=tf.TensorShape([]))
 
         test_data = test_data.interleave(
             lambda x: data_prep(x, False),
-            cycle_length=hparams.run.parallel_shards,
-            block_length=1,
-            num_parallel_calls=num_parallel_calls,
+            cycle_length=tf.data.AUTOTUNE,
+            num_parallel_calls=tf.data.AUTOTUNE,
             deterministic=False)
 
         test_data = test_data.batch(
             hparams.synthesis.batch_size,
             drop_remainder=True
         )
-        test_data = test_data.prefetch(tf.data.experimental.AUTOTUNE)
+        test_data = test_data.prefetch(tf.data.AUTOTUNE)
 
         test_data = tfds.as_numpy(test_data)
         test_data = map(lambda x: load_and_shard_tf_batch(x, hparams.synthesis.batch_size), test_data)
         test_data = jax_utils.prefetch_to_device(test_data, 10)
         return test_data
-    elif hparams.synthesis.synthesis_mode == 'div_stats':
-        train_data = SynthFileReader(path=hparams.data.train_data_path)
 
-        n_train_samples = train_data.images.shape[0]
+    elif hparams.synthesis.synthesis_mode == 'div_stats':
+        train_data = FileReader(path=hparams.data.train_data_path, shuffle_=False)
+
+        n_train_samples = len(train_data.files)
 
         train_data = tf.data.Dataset.from_generator(train_data.generator,
-                                                    output_types=tf.uint8,
-                                                    output_shapes=tf.TensorShape(
-                                                        [hparams.data.target_res, hparams.data.target_res,
-                                                         hparams.data.channels]
-                                                    ))
-
-        num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
+                                                    output_types=tf.string,
+                                                    output_shapes=tf.TensorShape([]))
 
         # Take a subset of the data
         train_data = train_data.shuffle(n_train_samples)
@@ -79,16 +74,15 @@ def create_synthesis_generic_dataset():
         # Preprocess subset and prefect to device
         train_data = train_data.interleave(
             lambda x: data_prep(x, False),
-            cycle_length=hparams.run.parallel_shards,
-            block_length=1,
-            num_parallel_calls=num_parallel_calls,
+            cycle_length=tf.data.AUTOTUNE,
+            num_parallel_calls=tf.data.AUTOTUNE,
             deterministic=False)
 
         train_data = train_data.batch(
             hparams.synthesis.batch_size,
             drop_remainder=True
         )
-        train_data = train_data.prefetch(tf.data.experimental.AUTOTUNE)
+        train_data = train_data.prefetch(tf.data.AUTOTUNE)
 
         train_data = tfds.as_numpy(train_data)
         train_data = map(lambda x: load_and_shard_tf_batch(x, hparams.synthesis.batch_size), train_data)
@@ -96,21 +90,16 @@ def create_synthesis_generic_dataset():
         return train_data
 
     elif hparams.synthesis.synthesis_mode == 'encoding':
-        train_data = NamedSynthFileReader(path=hparams.data.train_data_path)
+        train_data = NamedFileReader(path=hparams.data.train_data_path)
 
         train_data = tf.data.Dataset.from_generator(train_data.generator,
-                                                    output_types=(tf.uint8, tf.string),
-                                                    output_shapes=(tf.TensorShape(
-                                                        [hparams.data.target_res, hparams.data.target_res,
-                                                         hparams.data.channels]), tf.TensorShape([])))
-
-        num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
+                                                    output_types=(tf.string, tf.string),
+                                                    output_shapes=(tf.TensorShape([]), tf.TensorShape([])))
 
         train_data = train_data.interleave(
             named_data_prep,
-            cycle_length=hparams.run.parallel_shards,
-            block_length=1,
-            num_parallel_calls=num_parallel_calls,
+            cycle_length=tf.data.AUTOTUNE,
+            num_parallel_calls=tf.data.AUTOTUNE,
             deterministic=False
         )
 
@@ -119,7 +108,7 @@ def create_synthesis_generic_dataset():
             drop_remainder=True
         )
 
-        train_data = train_data.prefetch(tf.data.experimental.AUTOTUNE)
+        train_data = train_data.prefetch(tf.data.AUTOTUNE)
 
         train_data = tfds.as_numpy(train_data)
         train_data = map(lambda x: (load_and_shard_tf_batch(x[0], hparams.synthesis.batch_size), x[1]), train_data)
@@ -129,12 +118,16 @@ def create_synthesis_generic_dataset():
         return None
 
 
-def named_data_prep(img, filename):
-    inputs = data_prep(img, flip=False, return_targets=False)
+def named_data_prep(img_file, filename):
+    inputs = data_prep(img_file, flip=False, return_targets=False)
     return tf.data.Dataset.from_tensor_slices(tensors=(inputs, filename[tf.newaxis]))
 
 
-def data_prep(img, flip, return_targets=True):
+def data_prep(img_file, flip, return_targets=True):
+    # Read image
+    img = tf.numpy_function(read_image_and_resize, inp=[img_file], Tout=[tf.uint8], name='read_image_resize')
+    img = tf.ensure_shape(img, shape=[1, hparams.data.target_res, hparams.data.target_res, hparams.data.channels])  # 1, H, W, C
+
     # Random flip
     if flip and hparams.data.random_horizontal_flip:
         img = tf.image.random_flip_left_right(img)
@@ -145,28 +138,24 @@ def data_prep(img, flip, return_targets=True):
 
     if return_targets:
         targets = normalizer(img, reduce_bits=True)
-        return tf.data.Dataset.from_tensor_slices(tensors=(inputs[tf.newaxis, ...], targets[tf.newaxis, ...]))
+        return tf.data.Dataset.from_tensor_slices(tensors=(inputs, targets))
     else:
-        return inputs[tf.newaxis, ...]
+        return inputs
 
 
 def create_generic_datasets():
-    train_data = FileReader(path=hparams.data.train_data_path)
-    val_data = FileReader(path=hparams.data.val_data_path, close_pools=True)
+    train_data = FileReader(path=hparams.data.train_data_path, shuffle_=True)
+    val_data = FileReader(path=hparams.data.val_data_path, shuffle_=True)
 
-    n_train_samples = train_data.images.shape[0]
-    n_val_samples = val_data.images.shape[0]
+    n_train_samples = len(train_data.files)
+    n_val_samples = len(val_data.files)
 
     train_data = tf.data.Dataset.from_generator(train_data.generator,
-                                                output_types=tf.uint8,
-                                                output_shapes=tf.TensorShape(
-                                                    [hparams.data.target_res, hparams.data.target_res,
-                                                     hparams.data.channels])).cache()
+                                                output_types=tf.string,
+                                                output_shapes=tf.TensorShape([])).cache()
     val_data = tf.data.Dataset.from_generator(val_data.generator,
-                                              output_types=tf.uint8,
-                                              output_shapes=tf.TensorShape(
-                                                  [hparams.data.target_res, hparams.data.target_res,
-                                                   hparams.data.channels])).cache()
+                                              output_types=tf.string,
+                                              output_shapes=tf.TensorShape([])).cache()
 
     # Repeat data across epochs
     train_data = train_data.repeat()
@@ -176,21 +165,17 @@ def create_generic_datasets():
     train_data = train_data.shuffle(n_train_samples)
     val_data = val_data.shuffle(n_val_samples)
 
-    num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
-
     train_data = train_data.interleave(
         lambda x: data_prep(x, True),
-        cycle_length=hparams.run.parallel_shards,
-        block_length=1,
-        num_parallel_calls=num_parallel_calls,
+        cycle_length=tf.data.AUTOTUNE,
+        num_parallel_calls=tf.data.AUTOTUNE,
         deterministic=False
     )
 
     val_data = val_data.interleave(
         lambda x: data_prep(x, False),
-        cycle_length=hparams.run.parallel_shards,
-        block_length=1,
-        num_parallel_calls=num_parallel_calls,
+        cycle_length=tf.data.AUTOTUNE,
+        num_parallel_calls=tf.data.AUTOTUNE,
         deterministic=False
     )
 
@@ -199,13 +184,13 @@ def create_generic_datasets():
         hparams.train.batch_size,
         drop_remainder=True
     )
-    train_data = train_data.prefetch(tf.data.experimental.AUTOTUNE)
+    train_data = train_data.prefetch(tf.data.AUTOTUNE)
 
     val_data = val_data.batch(
         hparams.val.batch_size,
         drop_remainder=True
     )
-    val_data = val_data.prefetch(tf.data.experimental.AUTOTUNE)
+    val_data = val_data.prefetch(tf.data.AUTOTUNE)
 
     train_data = tfds.as_numpy(train_data)
     val_data = tfds.as_numpy(val_data)
@@ -219,85 +204,35 @@ def create_generic_datasets():
 
 
 class FileReader:
-    def __init__(self, path, close_pools=False):
-        files = [os.path.join(path, f) for f in os.listdir(path)]
-
-        with multiprocessing.Pool(hparams.run.num_cpus) as p:
-            images = list(tqdm(p.imap(self.read_resize_image, files), total=len(files)))
-        self.images = np.stack(images, axis=0).astype('uint8')
-        print(path, self.images.shape)
-
-        p.close()
-        p.join()
-        p = None
-
-    def read_resize_image(self, image_file):
-        return np.asarray(
-            Image.open(image_file).convert("RGB").resize((hparams.data.target_res, hparams.data.target_res),
-                                                         resample=Image.BILINEAR))
+    def __init__(self, path, shuffle_):
+        self.shuffle_ = shuffle_
+        self.files = [os.path.join(path, f) for f in os.listdir(path)]
+        print(path, len(self.files))
 
     def _get_item(self, idx):
-        return self.images[idx]
+        return self.files[idx]
 
     def generator(self):
-        self.images = shuffle(self.images)
+        if self.shuffle_:
+            self.files = shuffle(self.files)
 
-        for idx in range(len(self.images)):
+        for idx in range(len(self.files)):
             yield self._get_item(idx)
 
 
-class SynthFileReader:
-    def __init__(self, path, close_pools=True):
-        self.filenames = sorted(os.listdir(path))  # Avoid randomness of samples used in test
-        files = [os.path.join(path, f) for f in self.filenames]
-
-        with multiprocessing.Pool(hparams.run.num_cpus) as p:
-            images = list(tqdm(p.imap(self.read_resize_image, files), total=len(files)))
-        self.images = np.stack(images, axis=0).astype('uint8')
-        print(path, self.images.shape)
-
-        p.close()
-        p.join()
-        p = None
-
-    def read_resize_image(self, image_file):
-        return np.asarray(
-            Image.open(image_file).convert("RGB").resize((hparams.data.target_res, hparams.data.target_res),
-                                                         resample=Image.BILINEAR))
-
-    def _get_item(self, idx):
-        return self.images[idx]
-
-    def generator(self):
-        for idx in range(len(self.images)):
-            yield self._get_item(idx)
-
-
-class NamedSynthFileReader:
-    def __init__(self, path, close_pools=True):
+class NamedFileReader:
+    def __init__(self, path):
         self.filenames = sorted(os.listdir(path))
-        files = [os.path.join(path, f) for f in self.filenames]
+        self.files = [os.path.join(path, f) for f in self.filenames]
 
-        with multiprocessing.Pool(hparams.run.num_cpus) as p:
-            images = list(tqdm(p.imap(self.read_resize_image, files), total=len(files)))
-        self.images = np.stack(images, axis=0).astype('uint8')
-        print(path, self.images.shape)
-
-        p.close()
-        p.join()
-        p = None
-
-    def read_resize_image(self, image_file):
-        return np.asarray(
-            Image.open(image_file).convert("RGB").resize((hparams.data.target_res, hparams.data.target_res),
-                                                         resample=Image.BILINEAR))
+        print(path, len(self.files))
 
     def _get_item(self, idx):
-        return self.images[idx]
+        return self.files[idx]
 
     def _get_filename(self, idx):
         return self.filenames[idx]
 
     def generator(self):
-        for idx in range(len(self.images)):
+        for idx in range(len(self.files)):
             yield self._get_item(idx), self._get_filename(idx)

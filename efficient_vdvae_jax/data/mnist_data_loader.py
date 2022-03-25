@@ -31,13 +31,10 @@ def create_synthesis_mnist_dataset():
 
         test_data = tf.data.Dataset.from_tensor_slices(test_images)
 
-        num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
-
         test_data = test_data.interleave(
             lambda x: tf.data.Dataset.from_tensor_slices(tensors=(x[tf.newaxis, ...], x[tf.newaxis, ...])),
-            cycle_length=hparams.run.parallel_shards,
-            block_length=1,
-            num_parallel_calls=num_parallel_calls,
+            cycle_length=tf.data.AUTOTUNE,
+            num_parallel_calls=tf.data.AUTOTUNE,
             deterministic=False
         )
 
@@ -45,7 +42,7 @@ def create_synthesis_mnist_dataset():
             hparams.synthesis.batch_size,
             drop_remainder=True
         )
-        test_data = test_data.prefetch(tf.data.experimental.AUTOTUNE)
+        test_data = test_data.prefetch(tf.data.AUTOTUNE)
 
         test_data = tfds.as_numpy(test_data)
         test_data = map(lambda x: load_and_shard_tf_batch(x, hparams.synthesis.batch_size), test_data)
@@ -59,8 +56,6 @@ def create_synthesis_mnist_dataset():
 
         train_data = tf.data.Dataset.from_tensor_slices(train_data)
 
-        num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
-
         # Take a subset of the data
         train_data = train_data.shuffle(n_train_samples)
         train_data = train_data.take(int(hparams.synthesis.div_stats_subset_ratio * n_train_samples))
@@ -68,16 +63,15 @@ def create_synthesis_mnist_dataset():
         # Preprocess subset and prefect to device
         train_data = train_data.interleave(
             data_prep,
-            cycle_length=hparams.run.parallel_shards,
-            block_length=1,
-            num_parallel_calls=num_parallel_calls,
+            cycle_length=tf.data.AUTOTUNE,
+            num_parallel_calls=tf.data.AUTOTUNE,
             deterministic=False)
 
         train_data = train_data.batch(
             hparams.synthesis.batch_size,
             drop_remainder=True
         )
-        train_data = train_data.prefetch(tf.data.experimental.AUTOTUNE)
+        train_data = train_data.prefetch(tf.data.AUTOTUNE)
 
         train_data = tfds.as_numpy(train_data)
         train_data = map(lambda x: load_and_shard_tf_batch(x, hparams.synthesis.batch_size), train_data)
@@ -90,13 +84,10 @@ def create_synthesis_mnist_dataset():
 
         train_data = tf.data.Dataset.from_tensor_slices((train_data, train_filenames))
 
-        num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
-
         train_data = train_data.interleave(
             named_data_prep,
-            cycle_length=hparams.run.parallel_shards,
-            block_length=1,
-            num_parallel_calls=num_parallel_calls,
+            cycle_length=tf.data.AUTOTUNE,
+            num_parallel_calls=tf.data.AUTOTUNE,
             deterministic=False
         )
 
@@ -105,7 +96,7 @@ def create_synthesis_mnist_dataset():
             drop_remainder=True
         )
 
-        train_data = train_data.prefetch(tf.data.experimental.AUTOTUNE)
+        train_data = train_data.prefetch(tf.data.AUTOTUNE)
 
         train_data = tfds.as_numpy(train_data)
         train_data = map(lambda x: (load_and_shard_tf_batch(x[0], hparams.synthesis.batch_size), x[1]), train_data)
@@ -184,21 +175,17 @@ def create_mnist_datasets():
     train_data = train_data.shuffle(n_train_samples)
     val_data = val_data.shuffle(n_val_samples)
 
-    num_parallel_calls = hparams.run.num_cpus // hparams.run.parallel_shards
-
     train_data = train_data.interleave(
         data_prep,
-        cycle_length=hparams.run.parallel_shards,
-        block_length=1,
-        num_parallel_calls=num_parallel_calls,
+        cycle_length=tf.data.AUTOTUNE,
+        num_parallel_calls=tf.data.AUTOTUNE,
         deterministic=False
     )
 
     val_data = val_data.interleave(
         lambda x: tf.data.Dataset.from_tensor_slices(tensors=(x[tf.newaxis, ...], x[tf.newaxis, ...])),
-        cycle_length=hparams.run.parallel_shards,
-        block_length=1,
-        num_parallel_calls=num_parallel_calls,
+        cycle_length=tf.data.AUTOTUNE,
+        num_parallel_calls=tf.data.AUTOTUNE,
         deterministic=False
     )
 
@@ -207,13 +194,13 @@ def create_mnist_datasets():
         hparams.train.batch_size,
         drop_remainder=True
     )
-    train_data = train_data.prefetch(tf.data.experimental.AUTOTUNE)
+    train_data = train_data.prefetch(tf.data.AUTOTUNE)
 
     val_data = val_data.batch(
         hparams.val.batch_size,
         drop_remainder=True
     )
-    val_data = val_data.prefetch(tf.data.experimental.AUTOTUNE)
+    val_data = val_data.prefetch(tf.data.AUTOTUNE)
 
     train_data = tfds.as_numpy(train_data)
     val_data = tfds.as_numpy(val_data)

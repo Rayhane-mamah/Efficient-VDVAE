@@ -389,7 +389,7 @@ def _encoding_mode(rng, train_dataset, params, devices, latents_folder):
 
 
 def general_inference(rng, params, artifacts_folder, latents_folder, dataset, mode):
-    devices = jax.devices()
+    devices = jax.devices('gpu') if hparams.run.num_gpus >= 1 else jax.devices()
     params = jax_utils.replicate(params, devices=devices)
     denormalizer = Denormalizer()
     ssim_metric = StructureSimilarityIndexMap(hparams.data.channels, denormalizer=denormalizer)
