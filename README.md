@@ -10,8 +10,7 @@
 <br>    
 <br>   
  
-[Efficient-VDVAE]() is a memory and compute efficient very deep hierarchical VAE. It converges faster and is more stable than current     
-hierarchical VAE models. It also achieves SOTA likelihood-based performance on several image datasets.    
+[Efficient-VDVAE]() is a memory and compute efficient very deep hierarchical VAE. It converges faster and is more stable than current hierarchical VAE models. It also achieves SOTA likelihood-based performance on several image datasets.    
     
 <p align="center">  
     <img src="images/unconditional_samples.png" width="1200">  
