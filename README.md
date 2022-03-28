@@ -1,4 +1,4 @@
-<div align="center"> <h1>The Official Pytorch and JAX implementation of "Efficient-VDVAE: Less is more" <a href="">Arxiv preprint</a></h1> </div>  
+<div align="center"> <h1>The Official Pytorch and JAX implementation of "Efficient-VDVAE: Less is more" <a href="https://arxiv.org/abs/2203.13751">Arxiv preprint</a></h1> </div>  
   
 <div align="center">    
   <a>Louay&nbsp;Hazami</a>     
@@ -10,7 +10,7 @@
 <br>    
 <br>   
  
-[Efficient-VDVAE]() is a memory and compute efficient very deep hierarchical VAE. It converges faster and is more stable than current     
+[Efficient-VDVAE](https://arxiv.org/abs/2203.13751) is a memory and compute efficient very deep hierarchical VAE. It converges faster and is more stable than current     
 hierarchical VAE models. It also achieves SOTA likelihood-based performance on several image datasets.    
     
 <p align="center">  
@@ -19,7 +19,7 @@ hierarchical VAE models. It also achieves SOTA likelihood-based performance on s
   
 ## Pre-trained model checkpoints  
   
-We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32, Imagenet 64x64, CelebA 64x64, CelebAHQ 256x256 (5-bits and 8-bits), FFHQ 256x256 (5-bits and 8bits), CelebAHQ 1024x1024 and FFHQ 1024x1024 in the links in the table below. All provided models are the ones trained for table 4 of the [paper]().
+We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32, Imagenet 64x64, CelebA 64x64, CelebAHQ 256x256 (5-bits and 8-bits), FFHQ 256x256 (5-bits and 8bits), CelebAHQ 1024x1024 and FFHQ 1024x1024 in the links in the table below. All provided models are the ones trained for table 4 of the [paper](https://arxiv.org/abs/2203.13751).
 
 <table align="center">
     <thead align="center">
@@ -187,7 +187,7 @@ In this repository, we use [hparams](https://github.com/Rayhane-mamah/hparams) l
 - The `.cfg` file is split into sections for readability, and all parameters in the file are accessible as class attributes in the codebase for convenience.  
 - The HParams object keeps a global state throughout all the scripts in the code.  
   
-We highly recommend having a deeper look into how this library works by reading the [hparams library documentation](https://github.com/Rayhane-mamah/hparams), the [parameters description](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg) and figures 4 and 5 in the [paper]() before trying to run Efficient-VDVAE.  
+We highly recommend having a deeper look into how this library works by reading the [hparams library documentation](https://github.com/Rayhane-mamah/hparams), the [parameters description](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg) and figures 4 and 5 in the [paper](https://arxiv.org/abs/2203.13751) before trying to run Efficient-VDVAE.  
 
 We have heavily tested the robustness and stability of our approach, so changing the model/optimization hyper-parameters for memory load reduction should not introduce any drastic instabilities as to make the model untrainable. That is of course as long as the changes don't negate the important stability points we describe in the paper.
   
@@ -253,7 +253,7 @@ Efficient-VDVAE support multiple inference modes:
   
 - "reconstruction": Encodes then decodes the test set images and computes test NLL and SSIM.  
 - "generation": Generates random images from the prior distribution. Randomness is controlled by the `run.seed` parameter.  
-- "div_stats": Pre-computes the average KL divergence stats used to determine turned-off variates (refer to section 7 of the [paper]()). Note: This mode needs to be run before "encoding" mode and before trying to do masked "reconstruction" (Refer to [hparams.cfg](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg) for a detailed description).  
+- "div_stats": Pre-computes the average KL divergence stats used to determine turned-off variates (refer to section 7 of the [paper](https://arxiv.org/abs/2203.13751)). Note: This mode needs to be run before "encoding" mode and before trying to do masked "reconstruction" (Refer to [hparams.cfg](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg) for a detailed description).  
 - "encoding": Extracts the latent distribution from the inference model, pruned to the quantile defined by `synthesis.variates_masks_quantile` parameter. This latent distribution is usable in downstream tasks.  
   
 To run the inference:  
@@ -279,4 +279,17 @@ python synthesize.py
 
 ## Bibtex  
   
-TODO
+If you happen to use this codebase, please cite our paper:
+
+```
+@misc{https://doi.org/10.48550/arxiv.2203.13751,
+  doi = {10.48550/ARXIV.2203.13751},
+  url = {https://arxiv.org/abs/2203.13751},
+  author = {Hazami, Louay and Mama, Rayhane and Thurairatnam, Ragavan},
+  keywords = {Machine Learning (cs.LG), Computer Vision and Pattern Recognition (cs.CV), FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title = {Efficient-VDVAE: Less is more},
+  publisher = {arXiv},
+  year = {2022},
+  copyright = {arXiv.org perpetual, non-exclusive license}
+}
+```
