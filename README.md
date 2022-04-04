@@ -81,8 +81,8 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
         </tr>
         <tr>
             <td align="center">CelebAHQ 256x256 (5-bits)</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Queued</td>
+            <td align="center">Queued</td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center">0.51 bits/dim</td>
@@ -97,8 +97,8 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
         </tr>
         <tr>
             <td align="center">FFHQ 256x256 (5-bits)</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Queued</td>
+            <td align="center">Queued</td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center">0.53 bits/dim</td>
@@ -113,16 +113,16 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
         </tr>
         <tr>
             <td align="center">CelebAHQ 1024x1024</td>
-            <td align="center">Queued</td>
-            <td align="center">Queued</td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/celebAHQ1024_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/celebAHQ1024_baseline_checkpoints.zip">link</a></td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center">1.01 bits/dim</td>
         </tr>
         <tr>
             <td align="center">FFHQ 1024x1024</td>
-            <td align="center">Queued</td>
-            <td align="center">Queued</td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/ffhq1024_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/ffhq1024_baseline_checkpoints.zip">link</a></td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center">2.30 bits/dim</td>
@@ -276,7 +276,7 @@ python synthesize.py
 - [x] Make data loaders Out-Of-Core (OOC) in Pytorch
 - [x] Make data loaders Out-Of-Core (OOC) in JAX
 - [ ] Update pre-trained model checkpoints
-- [ ]  Add Fréchet-Inception Distance (FID) and Inception Score (IS) as measures for sample quality performance.
+- [ ] Add Fréchet-Inception Distance (FID) and Inception Score (IS) as measures for sample quality performance.
 - [ ] Improve the format of the encoded dataset used in downstream tasks (output of `encoding` mode, if there is a need)
 - [ ] Write a `decoding` mode API (if needed).
 
