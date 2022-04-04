@@ -292,25 +292,26 @@ def eval_step(model, inputs, step_n):
 
 
 def reconstruction_step(model, inputs, variates_masks=None, mode='recon'):
-    predictions, posterior_dist_list, prior_kl_dist_list = model(inputs, variates_masks)
-    if mode == 'recon':
-        feature_matching_loss, global_varprior_losses, total_generator_loss, means, \
-        log_scales, kl_div = compute_loss(inputs,
-                                          predictions,
-                                          posterior_dist_list=posterior_dist_list,
-                                          prior_kl_dist_list=prior_kl_dist_list,
-                                          step_n=max(hparams.loss.vae_beta_anneal_steps,
-                                                     hparams.loss.gamma_max_steps) * 10.,
-                                          # any number bigger than schedule is fine
-                                          global_batch_size=hparams.synthesis.batch_size)
+    with torch.no_grad():
+        predictions, posterior_dist_list, prior_kl_dist_list = model(inputs, variates_masks)
+        if mode == 'recon':
+            feature_matching_loss, global_varprior_losses, total_generator_loss, means, \
+            log_scales, kl_div = compute_loss(inputs,
+                                              predictions,
+                                              posterior_dist_list=posterior_dist_list,
+                                              prior_kl_dist_list=prior_kl_dist_list,
+                                              step_n=max(hparams.loss.vae_beta_anneal_steps,
+                                                         hparams.loss.gamma_max_steps) * 10.,
+                                              # any number bigger than schedule is fine
+                                              global_batch_size=hparams.synthesis.batch_size)
 
-        outputs = model.top_down.sample(predictions)
+            outputs = model.top_down.sample(predictions)
 
-        return outputs, feature_matching_loss, kl_div
-    elif mode == 'encode':
-        return posterior_dist_list
-    else:
-        raise ValueError(f'Unknown Mode {mode}')
+            return outputs, feature_matching_loss, kl_div
+        elif mode == 'encode':
+            return posterior_dist_list
+        else:
+            raise ValueError(f'Unknown Mode {mode}')
 
 
 def generation_step(model, temperatures):

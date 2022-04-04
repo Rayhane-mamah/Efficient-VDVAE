@@ -86,37 +86,37 @@ def reconstruction_mode(artifacts_folder, latents_folder, test_dataset, model, s
 
     nelbos, ssims = 0., 0.
     sample_i = 0
-    with torch.no_grad():
-        for step, inputs in enumerate(test_dataset):
-            inputs = inputs.to(device, non_blocking=True)
-            outputs, reconstruction_loss, kl_div = reconstruction_step(model, inputs, variates_masks=variate_masks)
 
-            targets = inputs
-            nelbo = reconstruction_loss + kl_div
-            ssim_per_batch = ssim_metric(targets, outputs, global_batch_size=hparams.synthesis.batch_size)
-            ssims += ssim_per_batch
-            nelbos += nelbo
+    for step, inputs in enumerate(test_dataset):
+        inputs = inputs.to(device)
+        outputs, reconstruction_loss, kl_div = reconstruction_step(model, inputs, variates_masks=variate_masks)
 
-            # Save images to disk
-            for batch_i, (target, output) in enumerate(zip(targets, outputs)):
-                if hparams.synthesis.save_target_in_reconstruction:
-                    write_image_to_disk(
-                        os.path.join(artifacts_folder, f'target-{sample_i:04d}.png'),
-                        target.detach().cpu().numpy())
+        targets = inputs
+        nelbo = reconstruction_loss + kl_div
+        ssim_per_batch = ssim_metric(targets, outputs, global_batch_size=hparams.synthesis.batch_size)
+        ssims += ssim_per_batch
+        nelbos += nelbo
+
+        # Save images to disk
+        for batch_i, (target, output) in enumerate(zip(targets, outputs)):
+            if hparams.synthesis.save_target_in_reconstruction:
                 write_image_to_disk(
-                    os.path.join(artifacts_folder, f'image-{sample_i:04d}.png'),
-                    output.detach().cpu().numpy())
+                    os.path.join(artifacts_folder, f'target-{sample_i:04d}.png'),
+                    target.detach().cpu().numpy())
+            write_image_to_disk(
+                os.path.join(artifacts_folder, f'image-{sample_i:04d}.png'),
+                output.detach().cpu().numpy())
 
-                sample_i += 1
-            print(f'Step: {step:04d}  | NELBO: {nelbo:.4f} | Reconstruction: {reconstruction_loss:.4f} | '
-                  f'kl_div: {kl_div:.4f}| SSIM: {ssim_per_batch:.4f}    ', end='\r')
+            sample_i += 1
+        print(f'Step: {step:04d}  | NELBO: {nelbo:.4f} | Reconstruction: {reconstruction_loss:.4f} | '
+              f'kl_div: {kl_div:.4f}| SSIM: {ssim_per_batch:.4f} ', end='\r')
 
-        nelbo = nelbos / (step + 1)
-        ssim = ssims / (step + 1)
-        print()
-        print()
-        print('===========================================')
-        print(f'NELBO: {nelbo:.6f} | SSIM: {ssim:.6f}')
+    nelbo = nelbos / (step + 1)
+    ssim = ssims / (step + 1)
+    print()
+    print()
+    print('===========================================')
+    print(f'NELBO: {nelbo:.6f} | SSIM: {ssim:.6f}')
 
 
 def generation_mode(artifacts_folder, latents_folder, model):
@@ -301,11 +301,12 @@ def stats_data():
 
 
 def main():
-    if hparams.run.num_gpus > 1 :
+    if hparams.run.num_gpus > 1:
         raise ValueError("Inference mode in Pytorch only supports single GPU")
     model = UniversalAutoEncoder()
     model = model.to(device)
-    _ = model(torch.ones((1, hparams.data.channels, hparams.data.target_res, hparams.data.target_res)).cuda())
+    with torch.no_grad():
+        _ = model(torch.ones((1, hparams.data.channels, hparams.data.target_res, hparams.data.target_res)).cuda())
     # count_parameters(model)
     checkpoint, checkpoint_path = create_checkpoint_manager_and_load_if_exists(rank=0)
 

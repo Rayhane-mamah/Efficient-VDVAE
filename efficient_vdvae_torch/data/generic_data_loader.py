@@ -147,7 +147,7 @@ def synth_generic_data():
         batch_size=hparams.synthesis.batch_size,
         shuffle=True,
         pin_memory=True,
-        num_workers=hparams.run.num_cpus,
+        num_workers=2,
         drop_last=False)
     return synth_loader
 
@@ -160,7 +160,7 @@ def encode_generic_data():
         batch_size=hparams.synthesis.batch_size,
         shuffle=False,
         pin_memory=True,
-        num_workers=hparams.run.num_cpus)
+        num_workers=2)
 
     return data_loader
 
@@ -173,6 +173,6 @@ def stats_generic_data():
         batch_size=hparams.synthesis.batch_size,
         shuffle=True,
         pin_memory=True,
-        num_workers=hparams.run.num_cpus)
+        num_workers=2)
 
     return data_loader

@@ -89,8 +89,8 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
         </tr>
         <tr>
             <td align="center">CelebAHQ 256x256 (8-bits)</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Queued</td>
+            <td align="center">Queued</td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center">1.35 bits/dim</td>
@@ -105,24 +105,24 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
         </tr>
         <tr>
             <td align="center">FFHQ 256x256 (8-bits)</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/ffhq256_8bits_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/ffhq256_8bits_baseline_checkpoints.zip">link</a></td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center">2.17 bits/dim</td>
         </tr>
         <tr>
             <td align="center">CelebAHQ 1024x1024</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Queued</td>
+            <td align="center">Queued</td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center">1.01 bits/dim</td>
         </tr>
         <tr>
             <td align="center">FFHQ 1024x1024</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Queued</td>
+            <td align="center">Queued</td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center">2.30 bits/dim</td>
@@ -276,6 +276,7 @@ python synthesize.py
 - [x] Make data loaders Out-Of-Core (OOC) in Pytorch
 - [x] Make data loaders Out-Of-Core (OOC) in JAX
 - [ ] Update pre-trained model checkpoints
+- [ ]  Add Fréchet-Inception Distance (FID) and Inception Score (IS) as measures for sample quality performance.
 - [ ] Improve the format of the encoded dataset used in downstream tasks (output of `encoding` mode, if there is a need)
 - [ ] Write a `decoding` mode API (if needed).
 
@@ -284,14 +285,10 @@ python synthesize.py
 If you happen to use this codebase, please cite our paper:
 
 ```
-@misc{https://doi.org/10.48550/arxiv.2203.13751,
-  doi = {10.48550/ARXIV.2203.13751},
-  url = {https://arxiv.org/abs/2203.13751},
-  author = {Hazami, Louay and Mama, Rayhane and Thurairatnam, Ragavan},
-  keywords = {Machine Learning (cs.LG), Computer Vision and Pattern Recognition (cs.CV), FOS: Computer and information sciences, FOS: Computer and information sciences},
-  title = {Efficient-VDVAE: Less is more},
-  publisher = {arXiv},
-  year = {2022},
-  copyright = {arXiv.org perpetual, non-exclusive license}
+@article{hazami2022efficient,
+  title={Efficient-VDVAE: Less is more},
+  author={Hazami, Louay and Mama, Rayhane and Thurairatnam, Ragavan},
+  journal={arXiv preprint arXiv:2203.13751},
+  year={2022}
 }
 ```
