@@ -159,8 +159,7 @@ def calculate_std_loss(p: List[torch.Tensor], q: List[torch.Tensor]):
     return loss
 
 
-@torch.jit.script
-def calculate_logstd_loss(p: List[torch.Tensor], q: List[torch.Tensor]):
+def calculate_logstd_loss(p, q):
     q_logstd = q[1]
     p_logstd = p[1]
 
