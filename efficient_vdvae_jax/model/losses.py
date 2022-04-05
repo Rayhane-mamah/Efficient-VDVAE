@@ -325,8 +325,8 @@ class KLDivergence:
         p_mean, p_logstd = p
         q_mean, q_logstd = q
 
-        p_std = jnp.exp(p_logstd)
-        inv_q_std = jnp.exp(-q_logstd)  # 1 / q_std
+        p_std = jnp.exp(hparams.model.gradient_smoothing_beta * p_logstd)
+        inv_q_std = jnp.exp(-hparams.model.gradient_smoothing_beta * q_logstd)  # 1 / q_std
 
         term1 = jnp.square((p_mean - q_mean) * inv_q_std)
         term2 = jnp.square(p_std * inv_q_std)
