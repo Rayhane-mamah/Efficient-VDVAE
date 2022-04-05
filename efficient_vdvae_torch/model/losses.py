@@ -164,8 +164,8 @@ def calculate_logstd_loss(p: List[torch.Tensor], q: List[torch.Tensor]):
     q_logstd = q[1]
     p_logstd = p[1]
 
-    p_std = torch.exp(p_logstd)
-    inv_q_std = torch.exp(-q_logstd)
+    p_std = torch.exp(hparams.model.gradient_smoothing_beta * p_logstd)
+    inv_q_std = torch.exp(-hparams.model.gradient_smoothing_beta * q_logstd)
 
     term1 = (p[0] - q[0]) * inv_q_std
     term2 = p_std * inv_q_std
