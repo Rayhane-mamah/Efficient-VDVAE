@@ -44,18 +44,18 @@ class BernoulliLoss(nn.Module):
 
 
 def _compute_inv_stdv(logits):
-    softplus = nn.Softplus(beta=hparams.model.gradient_smoothing_beta)
-    if hparams.model.distribution_base == 'std':
+    softplus = nn.Softplus(beta=hparams.model.output_gradient_smoothing_beta)
+    if hparams.model.output_distribution_base == 'std':
         scales = torch.maximum(softplus(logits),
                                torch.as_tensor(np.exp(hparams.loss.min_mol_logscale)))
         inv_stdv = 1. / scales  # Not stable for sharp distributions
         log_scales = torch.log(scales)
 
-    elif hparams.model.distribution_base == 'logstd':
+    elif hparams.model.output_distribution_base == 'logstd':
         log_scales = torch.maximum(logits, torch.as_tensor(np.array(hparams.loss.min_mol_logscale)))
-        inv_stdv = torch.exp(-hparams.model.gradient_smoothing_beta * log_scales)
+        inv_stdv = torch.exp(-hparams.model.output_gradient_smoothing_beta * log_scales)
     else:
-        raise ValueError(f'distribution base {hparams.model.distribution_base} not known!!')
+        raise ValueError(f'distribution base {hparams.model.output_distribution_base} not known!!')
 
     return inv_stdv, log_scales
 

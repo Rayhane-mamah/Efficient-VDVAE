@@ -16,26 +16,6 @@ except (ImportError, ValueError):
 hparams = HParams.get_hparams_by_name("efficient_vdvae")
 
 
-class SqueezeExcite(nn.Module):
-    def __init__(self, in_filters: int, filters: int):
-        super(SqueezeExcite, self).__init__()
-        hidden_filters = max(filters // 16, 4)
-
-        self.se = nn.Sequential(
-            Conv2d(in_channels=in_filters, out_channels=hidden_filters, kernel_size=(1, 1), stride=(1, 1),
-                   padding='same'),
-            nn.ReLU(inplace=False),
-            Conv2d(in_channels=hidden_filters, out_channels=filters, kernel_size=(1, 1),
-                   stride=(1, 1), padding='same'),
-            nn.Sigmoid()
-        )
-
-    def forward(self, x):
-        se = x.mean(dim=[2, 3], keepdim=True)  # B, C, 1, 1
-        se = self.se(se)
-        return x * se  # B, H, W, C
-
-
 class Interpolate(nn.Module):
     def __init__(self, scale):
         super(Interpolate, self).__init__()
@@ -44,15 +24,6 @@ class Interpolate(nn.Module):
     def forward(self, x):
         x = F.interpolate(x, scale_factor=self.scale, mode='nearest')
         return x
-
-
-class Permute(nn.Module):
-    def __init__(self, dims):
-        super(Permute, self).__init__()
-        self.dims = dims
-
-    def forward(self, x):
-        return x.permute(dims=self.dims).contiguous()
 
 
 class Unpoolayer(nn.Module):
