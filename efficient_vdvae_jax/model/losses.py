@@ -141,16 +141,16 @@ class ReconstructionLayer:
         self.max_pix_value = normalizer(255, reduce_bits=True)
 
     def _compute_scales(self, logits):
-        if hparams.model.distribution_base == 'std':
-            scales = jnp.maximum(beta_softplus(logits, beta=hparams.model.gradient_smoothing_beta),
+        if hparams.model.output_distribution_base == 'std':
+            scales = jnp.maximum(beta_softplus(logits, beta=hparams.model.output_gradient_smoothing_beta),
                                  jnp.exp(hparams.loss.min_mol_logscale))
 
-        elif hparams.model.distribution_base == 'logstd':
+        elif hparams.model.output_distribution_base == 'logstd':
             log_scales = jnp.maximum(logits, hparams.loss.min_mol_logscale)
-            scales = jnp.exp(hparams.model.gradient_smoothing_beta * log_scales)
+            scales = jnp.exp(hparams.model.output_gradient_smoothing_beta * log_scales)
 
         else:
-            raise ValueError(f'distribution base {hparams.model.distribution_base} not known!!')
+            raise ValueError(f'distribution base {hparams.model.output_distribution_base} not known!!')
 
         return scales
 
@@ -213,18 +213,18 @@ class ReconstructionLayer:
             return self._sample_from_mol(key, logits)
 
     def _compute_inv_stdv(self, logits):
-        if hparams.model.distribution_base == 'std':
-            scales = jnp.maximum(beta_softplus(logits, beta=hparams.model.gradient_smoothing_beta),
+        if hparams.model.output_distribution_base == 'std':
+            scales = jnp.maximum(beta_softplus(logits, beta=hparams.model.output_gradient_smoothing_beta),
                                  jnp.exp(hparams.loss.min_mol_logscale))
             inv_stdv = 1. / scales  # Not stable for sharp distributions
             log_scales = jnp.log(scales)
 
-        elif hparams.model.distribution_base == 'logstd':
+        elif hparams.model.output_distribution_base == 'logstd':
             log_scales = jnp.maximum(logits, hparams.loss.min_mol_logscale)
-            inv_stdv = jnp.exp(-hparams.model.gradient_smoothing_beta * log_scales)
+            inv_stdv = jnp.exp(-hparams.model.output_gradient_smoothing_beta * log_scales)
 
         else:
-            raise ValueError(f'distribution base {hparams.model.distribution_base} not known!!')
+            raise ValueError(f'distribution base {hparams.model.output_distribution_base} not known!!')
 
         return inv_stdv, log_scales
 
