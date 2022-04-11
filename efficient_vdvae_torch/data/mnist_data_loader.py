@@ -30,7 +30,7 @@ def download_mnist_datasets():
 
     x_val, x_test = torch.tensor(x_val), torch.tensor(x_test)
     x_val = torch.Tensor(x_val.size()).bernoulli_(x_val)  # fix binarization
-    x_test = torch.tensor(x_test.size()).bernoulli_(x_test)
+    x_test = torch.Tensor(x_test.size()).bernoulli_(x_test)
 
     return x_train, x_val, x_test
 

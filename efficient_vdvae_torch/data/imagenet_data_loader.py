@@ -114,7 +114,7 @@ class imagenet_dataset(torch.utils.data.Dataset):
         if self.mode in ['train', 'test', 'encode']:
             return len(self.images)
         elif self.mode == 'val':
-            return hparams.val.n_samples_per_step
+            return hparams.val.n_samples_for_validation
         elif self.mode == 'div_stats':
             return round(len(self.images) * hparams.synthesis.div_stats_subset_ratio)
 

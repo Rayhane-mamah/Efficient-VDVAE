@@ -41,24 +41,24 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
     <tbody align="center">
         <tr>
             <td align="center">MNIST</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Queued</td>
+            <td align="center">Queued</td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/binarized_mnist_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/binarized_mnist_baseline_checkpoints.zip">link</a></td>
             <td align="center">79.09 nats</td>
         </tr>
         <tr>
             <td align="center">CIFAR-10</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Queued</td>
+            <td align="center">Queued</td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/cifar10_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/cifar10_baseline_checkpoints.zip">link</a></td>
             <td align="center">2.87 bits/dim</td>
         </tr>
         <tr>
             <td align="center">Imagenet 32x32</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Queued</td>
+            <td align="center">Queued</td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/imagenet32_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/imagenet32_baseline_checkpoints.zip">link</a></td>
             <td align="center">3.58 bits/dim</td>
@@ -67,14 +67,14 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center">Imagenet 64x64</td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/imagenet64_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/imagenet64_baseline_checkpoints.zip">link</a></td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Queued</td>
+            <td align="center">Queued</td>
             <td align="center">3.30 bits/dim</td>
         </tr>
         <tr>
             <td align="center">CelebA 64x64</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Queued</td>
+            <td align="center">Queued</td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/celebA64_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/celebA64_baseline_checkpoints.zip">link</a></td>
             <td align="center">1.83 bits/dim</td>
@@ -89,8 +89,8 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
         </tr>
         <tr>
             <td align="center">CelebAHQ 256x256 (8-bits)</td>
-            <td align="center">Queued</td>
-            <td align="center">Queued</td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/celebahq256_8bits_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/celebahq256_8bits_baseline_checkpoints.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/celebAHQ256_8bits_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/celebAHQ256_8bits_baseline_checkpoints.zip">link</a></td>
             <td align="center">1.35 bits/dim</td>
