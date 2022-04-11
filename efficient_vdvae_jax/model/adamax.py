@@ -7,7 +7,7 @@ from optax._src.transform import _update_moment, _bias_correction, ScaleByAdamSt
 
 def _update_infinite_moment(updates, moments, decay, eps):
     """Compute the exponential moving average of the infinite moment."""
-    return jax.tree_multimap(
+    return jax.tree_map(
         lambda g, t: jnp.maximum(decay * t, jnp.abs(g) + eps), updates, moments)  # max(β2 · ut−1, |gt|)
 
 
@@ -41,7 +41,7 @@ def scale_by_adamax(
         nu = _update_infinite_moment(updates, state.nu, b2, eps)  # No bias correction for infinite moment
         count_inc = numerics.safe_int32_increment(state.count)
         mu_hat = _bias_correction(mu, b1, count_inc)
-        updates = jax.tree_multimap(
+        updates = jax.tree_map(
             lambda m, v: m / v, mu_hat, nu)
         return updates, ScaleByAdamState(count=count_inc, mu=mu, nu=nu)
 

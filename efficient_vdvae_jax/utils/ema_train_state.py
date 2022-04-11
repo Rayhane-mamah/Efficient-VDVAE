@@ -28,8 +28,8 @@ class EMATrainState(TrainState):
         updates, new_opt_state = self.tx.update(
             grads, self.opt_state, self.params)
         new_params = optax.apply_updates(self.params, updates)
-        new_ema_params = jax.tree_multimap(lambda ema, p: ema * self.ema_decay + (1 - self.ema_decay) * p,
-                                           self.ema_params, new_params)
+        new_ema_params = jax.tree_map(lambda ema, p: ema * self.ema_decay + (1 - self.ema_decay) * p,
+                                      self.ema_params, new_params)
         return self.replace(
             step=self.step + 1,
             params=new_params,
