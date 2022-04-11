@@ -147,7 +147,12 @@ To run this codebase, you need:
 - CUDA 11.1 or higher (can be installed from [here](https://developer.nvidia.com/cuda-11.1.0-download-archive))  
 
 We recommend running all the code below inside a `Linux screen` or any other terminal multiplexer, since some commands can take hours/days to finish and you don't want them to die when you close your terminal.
-  
+
+### Note:
+
+- If you're planning on running the JAX implementation, the installed JAX must use exactly the same CUDA and Cudnn versions installed. Our default [Dockerfile](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/build/Dockerfile) assumes the code will run with CUDA 11.4 or newer and should be changed otherwise. For more details, refer to [JAX
+ installation](https://github.com/google/jax#installation).
+
 ## Installation  
   
 To create the docker image used in both the Pytorch and JAX implementations:  
