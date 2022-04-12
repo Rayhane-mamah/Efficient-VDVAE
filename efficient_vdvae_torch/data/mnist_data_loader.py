@@ -69,7 +69,7 @@ class mnist_dataset(torch.utils.data.Dataset):
             img = self.images[idx]
             img = transform(img)
             return img
-        elif self.mode in ['val', 'div_stats']:
+        elif self.mode in ['val', 'div_stats', 'test']:
             img = self.images[idx]
             return img
         elif self.mode == 'encode':
@@ -115,13 +115,14 @@ def train_val_data_mnist(world_size, rank):
 
 def synth_mnist_data():
     _, _, test_images = download_mnist_datasets()
-    synth_mnist = mnist_dataset(test_images, 'val')
+    synth_mnist = mnist_dataset(test_images, 'test')
     synth_loader = torch.utils.data.DataLoader(
         dataset=synth_mnist,
         batch_size=hparams.synthesis.batch_size,
         shuffle=True,
         pin_memory=True,
-        num_workers=hparams.run.num_cpus)
+        num_workers=hparams.run.num_cpus,
+        drop_last=True)
     return synth_loader
 
 

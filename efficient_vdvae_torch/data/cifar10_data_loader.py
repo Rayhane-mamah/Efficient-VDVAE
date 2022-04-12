@@ -149,7 +149,7 @@ def synth_cifar_data():
         shuffle=True,
         pin_memory=True,
         num_workers=hparams.run.num_cpus,
-        drop_last=False)
+        drop_last=True)
     return synth_loader
 
 

@@ -292,8 +292,10 @@ def eval_step(model, inputs, step_n):
 
 
 def reconstruction_step(model, inputs, variates_masks=None, mode='recon'):
+    model.eval()
     with torch.no_grad():
         predictions, posterior_dist_list, prior_kl_dist_list = model(inputs, variates_masks)
+
         if mode == 'recon':
             feature_matching_loss, global_varprior_losses, total_generator_loss, means, \
             log_scales, kl_div = compute_loss(inputs,
@@ -304,6 +306,10 @@ def reconstruction_step(model, inputs, variates_masks=None, mode='recon'):
                                                          hparams.loss.gamma_max_steps) * 10.,
                                               # any number bigger than schedule is fine
                                               global_batch_size=hparams.synthesis.batch_size)
+
+            if hparams.data.dataset_source == 'binarized_mnist':
+                # Convert from bpd to nats for comparison
+                kl_div = kl_div * np.log(2.) * effective_pixels()
 
             outputs = model.top_down.sample(predictions)
 

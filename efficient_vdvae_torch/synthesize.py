@@ -62,14 +62,19 @@ torch.autograd.profiler.emit_nvtx(False)
 
 def write_image_to_disk(filepath, image):
     assert len(image.shape) == 3
-    if hparams.data.dataset_source == ' binarized_mnist':
+
+    if hparams.data.dataset_source == 'binarized_mnist':
         assert image.shape[0] == 1
         image *= 255.
+        image = image[0]  # Greyscale images need to be in shape [h,w] for Pillow and not [1,h,w]
+        image = image.astype(np.uint8)
+
     else:
         assert image.shape[0] == 3
         image = np.round(image * 127.5 + 127.5)
         image = image.astype(np.uint8)
         image = np.transpose(image, (1, 2, 0))
+
     im = Image.fromarray(image)
     im.save(filepath, format='png')
 
@@ -90,8 +95,8 @@ def reconstruction_mode(artifacts_folder, latents_folder, test_dataset, model, s
     for step, inputs in enumerate(test_dataset):
         inputs = inputs.to(device)
         outputs, reconstruction_loss, kl_div = reconstruction_step(model, inputs, variates_masks=variate_masks)
-
         targets = inputs
+
         nelbo = reconstruction_loss + kl_div
         ssim_per_batch = ssim_metric(targets, outputs, global_batch_size=hparams.synthesis.batch_size)
         ssims += ssim_per_batch

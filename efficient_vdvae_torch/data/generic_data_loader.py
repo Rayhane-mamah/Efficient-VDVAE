@@ -148,7 +148,7 @@ def synth_generic_data():
         shuffle=True,
         pin_memory=True,
         num_workers=2,
-        drop_last=False)
+        drop_last=True)
     return synth_loader
 
 
