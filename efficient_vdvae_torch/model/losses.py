@@ -25,20 +25,13 @@ class BernoulliLoss(nn.Module):
         targets = targets[:, :, 2:30, 2:30]
         logits = logits[:, :, 2:30, 2:30]
 
-        # recon = torch.squeeze(torch.maximum(logits, torch.as_tensor(0.)) - logits * targets + torch.log(torch.as_tensor(1.) + torch.exp(-torch.abs(logits))), dim=1)
         loss_value = Bernoulli(logits=logits)
         recon = loss_value.log_prob(targets)
         mean_axis = list(range(1, len(recon.size())))
         per_example_loss = - torch.sum(recon, dim=mean_axis)
-        avg_per_example_loss = per_example_loss / (
-            np.prod([recon.size()[i] for i in mean_axis]))  # B
         scalar = global_batch_size * effective_pixels()
         loss = torch.sum(per_example_loss) / scalar
-        avg_loss = torch.sum(avg_per_example_loss) / (global_batch_size * np.log(
-            2))  # divide by ln(2) to convert to bit range (for visualization purposes only)
-        if hparams.data.dataset_source == 'binarized_mnist':
-            # Convert from bpd to nats for comparison
-            avg_loss = avg_loss * np.log(2.) * effective_pixels()
+        avg_loss = torch.sum(per_example_loss) / global_batch_size
         model_means, log_scales = None, None
         return loss, avg_loss, model_means, log_scales
 

@@ -85,7 +85,7 @@ def main():
                                         beta_1=hparams.optimizer.beta1,
                                         beta_2=hparams.optimizer.beta2,
                                         epsilon=hparams.optimizer.epsilon,
-                                        weight_decay_rate=hparams.loss.l2_weight if hparams.loss.use_weight_decay else 0.,
+                                        weight_decay_rate=0.,
                                         decay_scheme=hparams.optimizer.learning_rate_scheme,
                                         warmup_steps=hparams.optimizer.warmup_steps,
                                         decay_steps=hparams.optimizer.decay_steps,

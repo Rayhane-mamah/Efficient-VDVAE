@@ -457,7 +457,6 @@ def train(model, ema_model, optimizer, schedule, train_dataset, val_dataset, che
 
                     val_losses.update({f'latent_kl_{i}': v for i, v in enumerate(val_global_varprior_losses)})
 
-
                     print(
                         f'Validation Stats for global_step {global_step} |'
                         f' Reconstruction Loss {val_feature_matching_loss:.4f} |'

@@ -64,7 +64,7 @@ def write_image_to_disk(filepath, image):
     assert len(image.shape) == 3
     if hparams.data.dataset_source == ' binarized_mnist':
         assert image.shape[0] == 1
-        image += 255.
+        image *= 255.
     else:
         assert image.shape[0] == 3
         image = np.round(image * 127.5 + 127.5)
