@@ -41,8 +41,8 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
     <tbody align="center">
         <tr>
             <td align="center">MNIST</td>
-            <td align="center">Queued</td>
-            <td align="center">Queued</td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/binarized_mnist_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/binarized_mnist_baseline_checkpoints.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/binarized_mnist_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/binarized_mnist_baseline_checkpoints.zip">link</a></td>
             <td align="center">79.09 nats</td>
@@ -81,8 +81,8 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
         </tr>
         <tr>
             <td align="center">CelebAHQ 256x256 (5-bits)</td>
-            <td align="center">Queued</td>
-            <td align="center">Queued</td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/celebAHQ256_5bits_baseline_checkpoints.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/celebAHQ256_5bits_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/celebAHQ256_5bits_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/celebAHQ256_5bits_baseline_checkpoints.zip">link</a></td>
             <td align="center">0.51 bits/dim</td>
