@@ -57,8 +57,8 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
         </tr>
         <tr>
             <td align="center">Imagenet 32x32</td>
-            <td align="center">Queued</td>
-            <td align="center">Queued</td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/imagenet32_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/imagenet32_baseline_checkpoints.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/imagenet32_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/imagenet32_baseline_checkpoints.zip">link</a></td>
             <td align="center">3.58 bits/dim</td>
@@ -73,8 +73,8 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
         </tr>
         <tr>
             <td align="center">CelebA 64x64</td>
-            <td align="center">Queued</td>
-            <td align="center">Queued</td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/celebA64_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/celebA64_baseline_checkpoints.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/celebA64_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/celebA64_baseline_checkpoints.zip">link</a></td>
             <td align="center">1.83 bits/dim</td>
@@ -97,8 +97,8 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
         </tr>
         <tr>
             <td align="center">FFHQ 256x256 (5-bits)</td>
-            <td align="center">Queued</td>
-            <td align="center">Queued</td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/ffhq256_5bits_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/ffhq256_8bits_baseline_checkpoints.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/ffhq256_5bits_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/ffhq256_5bits_baseline_checkpoints.zip">link</a></td>
             <td align="center">0.53 bits/dim</td>
