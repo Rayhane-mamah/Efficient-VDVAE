@@ -67,8 +67,8 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center">Imagenet 64x64</td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/imagenet64_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/imagenet64_baseline_checkpoints.zip">link</a></td>
-            <td align="center">Queued</td>
-            <td align="center">Queued</td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/imagenet64_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/imagenet64_baseline_checkpoints.zip">link</a></td>
             <td align="center">3.30 bits/dim</td>
         </tr>
         <tr>
@@ -236,6 +236,8 @@ sh reset.sh <run.name>  # <run.name> is the first field in hparams.cfg
 ### Note:  
   
 - To make things easier for new users, we provide example `hparams.cfg` files that can be used under the [egs](https://github.com/Rayhane-mamah/Efficient-VDVAE/tree/main/egs) folder. Detailed description of the role of each parameter is also inside [hparams.cfg](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg).
+- Hparams in [egs](https://github.com/Rayhane-mamah/Efficient-VDVAE/tree/main/egs) are to be viewed **only** as guiding examples, they are not meant to be exactly similar to pre
+-trained checkpoints or experiments done in the paper.
   
 ## Monitoring the training process  
   
