@@ -238,6 +238,8 @@ sh reset.sh <run.name>  # <run.name> is the first field in hparams.cfg
 - To make things easier for new users, we provide example `hparams.cfg` files that can be used under the [egs](https://github.com/Rayhane-mamah/Efficient-VDVAE/tree/main/egs) folder. Detailed description of the role of each parameter is also inside [hparams.cfg](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg).
 - Hparams in [egs](https://github.com/Rayhane-mamah/Efficient-VDVAE/tree/main/egs) are to be viewed **only** as guiding examples, they are not meant to be exactly similar to pre
 -trained checkpoints or experiments done in the paper.
+- While the example hparams under the naming convention `..._baseline.cfg` are not exactly the hparams of `C2` models in the paper (pre-trained checkpoints), they are easier to 
+  design models that achieve the same performance and can be treated as equivalents to `C2` models.
   
 ## Monitoring the training process  
   
