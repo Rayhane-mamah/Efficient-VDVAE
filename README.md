@@ -115,16 +115,16 @@ We provide checkpoints of pre-trained models on MNIST, CIFAR-10, Imagenet 32x32,
             <td align="center">CelebAHQ 1024x1024</td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/celebAHQ1024_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/celebAHQ1024_baseline_checkpoints.zip">link</a></td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/celebAHQ1024_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/celebAHQ1024_baseline_checkpoints.zip">link</a></td>
             <td align="center">1.01 bits/dim</td>
         </tr>
         <tr>
             <td align="center">FFHQ 1024x1024</td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/ffhq1024_baseline_logs.zip">link</a></td>
             <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/Pytorch/ffhq1024_baseline_checkpoints.zip">link</a></td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/ffhq1024_baseline_logs.zip">link</a></td>
+            <td align="center"><a href="https://storage.googleapis.com/dessa-public-files/efficient_vdvae/JAX/ffhq1024_baseline_checkpoints.zip">link</a></td>
             <td align="center">2.30 bits/dim</td>
         </tr>
     </tbody>
@@ -161,7 +161,13 @@ To create the docker image used in both the Pytorch and JAX implementations:
 cd build  
 docker build -t efficient_vdvae_image .  
 ```  
-  
+
+### Note:
+- If using JAX library on ampere architecture GPUs, it's possible to face a random GPU hanging problem when training on multiple GPUs 
+([issue](https://github.com/google/jax/issues/8475)). In that case, we provide an 
+[alternative docker image](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/build/ampere_Dockerfile) with an older version of JAX to bypass the issue until a solution is 
+found. 
+
 All code executions should be done within a docker container. To start the docker container, we provide a utility script:  
   
 ```  
