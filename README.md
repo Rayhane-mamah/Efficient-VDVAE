@@ -203,7 +203,7 @@ In this repository, we use [hparams](https://github.com/Rayhane-mamah/hparams) l
 We highly recommend having a deeper look into how this library works by reading the [hparams library documentation](https://github.com/Rayhane-mamah/hparams), the [parameters description](https://github.com/Rayhane-mamah/Efficient-VDVAE/blob/main/jax/hparams.cfg) and figures 4 and 5 in the [paper](https://arxiv.org/abs/2203.13751) before trying to run Efficient-VDVAE.  
 
 We have heavily tested the robustness and stability of our approach, so changing the model/optimization hyper-parameters for memory load reduction should not introduce any drastic instabilities as to make the model untrainable. That is of course as long as the changes don't negate the important stability points we describe in the paper.
-  
+
 ## Training the Efficient-VDVAE  
   
 To run Efficient-VDVAE in Torch:  
@@ -286,11 +286,83 @@ python synthesize.py
 - Since training a model with a name *`<run.name>`* will save that configuration under *`logs-<run.name>/hparams-<run.name>.cfg`* for reproducibility and error reduction. Any changes that one wants to make during inference time need to be applied on the saved hparams file (*`logs-<run.name>/hparams-<run.name>.cfg`*) instead of the main file *`hparams.cfg`*.  
 - The torch implementation currently doesn't support multi-GPU inference. The JAX implementation does.  
   
+## Using custom datasets
+
+If you want to train the networks on your custom datasets, you need the following requisites:
+
+- A folder with all the data samples saved as any image extension (png, jpg, etc), readable by PIL.
+- The data should be split across at least two folders for train and val datasets. Any splitting strategy of your choice should work. (Not mandatory but it's highly discouraged to 
+  evaluate on the train data).
+- All data images must be square shaped, preferably in powers of 2. e.g: 64x64, 128x128 etc.
+
+To use your custom dataset (in both training and inference), you only need to modify the `data` section of your `hparams.cfg` file. Specifically set `dataset_source = custom` 
+then change the data paths and image metadata. 
+
+For an example custom dataset of resolution `512` and grey scale, the `data` section of my `hparams.cfg` would look like:
+
+```
+[data]
+# Data section: Defines the dataset parameters
+# To change a dataset to run the code on:
+#   - Change the data.dataset_source to reflect which dataset you're trying to run.
+#           This controls which data loading scripts to use and how to normalize
+#   - Change the paths. For all datasets but binarized_mnist and cifar-10, define where the data lives on disk.
+#   - Change the metadata: Define the image resolution, the number of channels and the color bit-depth of the data.
+
+# Dataset source. Can be one of ('binarized_mnist', 'cifar-10', 'imagenet', 'celebA', 'celebAHQ', 'ffhq', 'custom')
+dataset_source = 'custom'
+
+# Data paths. Not used for (binarized_mnist, cifar-10)
+train_data_path = '../datasets/my_custom_data/train_data/'
+val_data_path = '../datasets/my_custom_data/val_data/'
+synthesis_data_path = '../datasets/my_custom_data/synthesis_data/'
+
+# Image metadata
+# Image resolution of the dataset (High and Width, assumed square)
+target_res = 512
+# Image channels of the dataset (Number of color channels)
+channels = 1
+# Image color depth in the dataset (bit-depth of each color channel)
+num_bits = 8.
+# Whether to do a random horizontal flip of images when loading the data (no applicable to MNIST)
+random_horizontal_flip = True
+```
+
+Obviously, also change the model section of the `hparams.cfg` to create a model that works well with your data resolution. When in doubt, get inspired by the example hparams in the 
+[egs](https://github.com/Rayhane-mamah/Efficient-VDVAE/tree/main/egs) folder.
+
+### Notes:
+
+- If your custom dataset isn't split between train and val, you can use the standalone utility script we provide:
+```
+cd data_scripts
+python random_split.py <input_directory> <output_directory> <num_val_samples>
+```
+- Splitting the data with this script will create two subfolders `<output_directory>/train_data` and `<output_directory>/val_data` which can be used in `hparams.cfg`.
+- If your custom dataset isn't square shaped, you can use the standalone utility script we provide:
+```
+cd data_scripts
+python utility_resize.py --in-path=<input_directory> --out-path=<output_directory> --resolution=<my_res> --resize-type=<my_resize_type>
+```
+- `--resize-type` can be one of `(center_crop, random_crop, reshape)` and defiles how to make your dataset square shaped.
+- For `random_crop` resize type, there is an extra `--repeat-n` argument that defines how many images to create from each initial non square shaped sample (by randomly cropping it).
+- For more information about the utility resize script, refer to the code or run:
+```
+python utility_resize.py --help
+```
+- An example preprocessing for a non-split dataset of desired resolution of `512` with `random crop` and a number of validation samples of `10000`:
+```
+cd data_scripts
+python utility_resize.py --in-path=/raw/data/path --out-path=/resized/data/path --resolution=512 --resize-type=random_crop --repeat-n=4
+python random_split.py /resized/data/path /preprocessed/data/path 
+```
+
 ## Potential TODOs
 
 - [x] Make data loaders Out-Of-Core (OOC) in Pytorch
 - [x] Make data loaders Out-Of-Core (OOC) in JAX
-- [ ] Update pre-trained model checkpoints
+- [x] Update pre-trained model checkpoints
+- [x] Add support for custom datasets
 - [ ] Add Fréchet-Inception Distance (FID) and Inception Score (IS) as measures for sample quality performance.
 - [ ] Improve the format of the encoded dataset used in downstream tasks (output of `encoding` mode, if there is a need)
 - [ ] Write a `decoding` mode API (if needed).

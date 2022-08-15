@@ -66,7 +66,7 @@ def main():
 
     print(f"Loading {hparams.data.dataset_source} datasets...")
     # Load datasets
-    if hparams.data.dataset_source in ('ffhq', 'celebAHQ', 'celebA'):
+    if hparams.data.dataset_source in ('ffhq', 'celebAHQ', 'celebA', 'custom'):
         data = create_synthesis_generic_dataset()
     elif hparams.data.dataset_source == 'cifar-10':
         data = create_synthesis_cifar10_dataset()

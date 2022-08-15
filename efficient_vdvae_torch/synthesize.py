@@ -267,7 +267,7 @@ def synthesize(model, data, logdir, mode):
 
 
 def synth_data():
-    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA']:
+    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA', 'custom']:
         return synth_generic_data()
     elif hparams.data.dataset_source == 'cifar-10':
         return synth_cifar_data()
@@ -280,7 +280,7 @@ def synth_data():
 
 
 def encode_data():
-    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA']:
+    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA', 'custom']:
         return encode_generic_data()
     elif hparams.data.dataset_source == 'cifar-10':
         return encode_cifar_data()
@@ -293,7 +293,7 @@ def encode_data():
 
 
 def stats_data():
-    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA']:
+    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA', 'custom']:
         return stats_generic_data()
     elif hparams.data.dataset_source == 'cifar-10':
         return stats_cifar_data()

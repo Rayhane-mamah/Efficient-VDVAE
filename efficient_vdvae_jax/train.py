@@ -66,7 +66,7 @@ def main():
 
     print(f"Loading {hparams.data.dataset_source} datasets...")
     # Load datasets
-    if hparams.data.dataset_source in ('ffhq', 'celebAHQ', 'celebA'):
+    if hparams.data.dataset_source in ('ffhq', 'celebAHQ', 'celebA', 'custom'):
         train_data, val_data = create_generic_datasets()
     elif hparams.data.dataset_source == 'cifar-10':
         train_data, val_data = create_cifar10_datasets()

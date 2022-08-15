@@ -118,7 +118,7 @@ def main():
 
     model = DistributedDataParallel(model)
 
-    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA']:
+    if hparams.data.dataset_source in ['ffhq', 'celebAHQ', 'celebA', 'custom']:
         train_files, train_filenames = create_filenames_list(hparams.data.train_data_path)
         val_files, val_filenames = create_filenames_list(hparams.data.val_data_path)
         train_loader, val_loader = train_val_data_generic(train_files, train_filenames, val_files, val_filenames,
